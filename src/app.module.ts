@@ -25,15 +25,19 @@ import { TagModule } from './tag/tag.module';
     TypeOrmModule.forRootAsync({
       useFactory: async (configService: ConfigService) => ({
         type: 'postgres',
-        host: configService.get<string>('PG_HOST'),
-        port: configService.get<number>('PG_PORT', 5432),
-        username: configService.get<string>('USER_NAME_DB'),
-        password: configService.get<string>('PASSWORD_DB'),
-        database: configService.get<string>('DB_NAME'),
+        url: configService.get<string>('PG_URI'),
+        // host: configService.get<string>('PG_HOST') || 'localhost',
+        // port: configService.get<number>('PG_PORT', 5432),
+        // username: configService.get<string>('USER_NAME_DB'),
+        // password: configService.get<string>('PASSWORD_DB'),
+        // database: configService.get<string>('DB_NAME'),
         autoLoadEntities: true,
         synchronize: true,
-        ssl: {
-          rejectUnauthorized: false,
+        extra: {
+          ssl: {
+            rejectUnauthorized: false,
+            sslmode: 'require',
+          },
         },
       }),
       inject: [ConfigService],
