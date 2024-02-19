@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "name": "blogs-and-posts",
+  "name": "rr.api",
   "builds": [
     { "src": "src/main.ts", "use": "@vercel/node" }
   ],
