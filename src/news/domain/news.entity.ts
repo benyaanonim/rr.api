@@ -1,5 +1,13 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToMany,
+  JoinTable,
+} from 'typeorm';
 import { Field, ObjectType } from '@nestjs/graphql';
+import { Category } from '../../category/domain/category.entity';
+import { Tag } from '../../tag/domain/tag.entity';
 
 @Entity()
 @ObjectType()
@@ -17,7 +25,7 @@ export class News {
   text: string;
 
   @Field()
-  @Column()
+  @Column({ default: 0 })
   viewCount: number;
 
   @Field()
@@ -28,19 +36,13 @@ export class News {
   @Column({ type: 'timestamp' })
   publicationDate: Date;
 
-  @Field(() => Tag)
-  @OneToMany(() => Tag, (tags) => tags.id)
+  @Field(() => [Tag], { nullable: true })
+  @ManyToMany(() => Tag, (tag) => tag.news)
+  @JoinTable()
   tags: Tag[];
-}
 
-@Entity()
-@ObjectType()
-export class Tag {
-  @Field()
-  @PrimaryGeneratedColumn()
-  id: number;
-
-  @Field()
-  @Column()
-  name: string;
+  @Field(() => [Category], { nullable: true })
+  @ManyToMany(() => Category, (category) => category.news)
+  @JoinTable()
+  categories: Category[];
 }

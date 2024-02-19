@@ -1,7 +1,7 @@
 import { Field, InputType } from '@nestjs/graphql';
 
 @InputType()
-export class UpdateTagInput {
+export class TagUpdateInput {
   @Field()
   id: number;
 
