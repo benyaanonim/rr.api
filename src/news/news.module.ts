@@ -1,12 +1,13 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { NewsResolver } from './graphql/news.resolver';
 import { NewsService } from './news.service';
 import { News } from './domain/news.entity';
 import { AwsService } from '../aws/aws.service';
+import { NewsController } from './app/news.controller';
 
 @Module({
   imports: [TypeOrmModule.forFeature([News])],
-  providers: [NewsResolver, NewsService, AwsService],
+  providers: [NewsService, AwsService],
+  controllers: [NewsController],
 })
 export class NewsModule {}

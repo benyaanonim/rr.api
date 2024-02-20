@@ -2,8 +2,6 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { GraphQLModule } from '@nestjs/graphql';
-import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { NewsModule } from './news/news.module';
 import { AwsModule } from './aws/aws.module';
@@ -12,12 +10,6 @@ import { TagModule } from './tag/tag.module';
 
 @Module({
   imports: [
-    GraphQLModule.forRoot<ApolloDriverConfig>({
-      driver: ApolloDriver,
-      introspection: true,
-      playground: true,
-      autoSchemaFile: true,
-    }),
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',

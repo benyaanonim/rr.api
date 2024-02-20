@@ -1,14 +1,12 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { EntityManager, In } from 'typeorm';
 import { News } from './domain/news.entity';
-import { InputId } from '../common/input/input-id';
-import { CreateNewsInput } from './graphql/input/news-create.input';
+import { CreateNewsInput } from './app/input/news-create.input';
 import { AwsService } from '../aws/aws.service';
-import { UpdateNewsInput } from './graphql/input/news-update.input';
-import { extractFileName } from '../helpers';
+import { UpdateNewsInput } from './app/input/news-update.input';
 import { Category } from '../category/domain/category.entity';
 import { Tag } from '../tag/domain/tag.entity';
-import process from 'process';
+import { extractFileName } from '../helpers';
 
 @Injectable()
 export class NewsService {
@@ -21,25 +19,25 @@ export class NewsService {
     return this.em.find(News, { relations: ['tags', 'categories'] });
   }
 
-  async getNewsById(input: InputId) {
+  async getNewsById(id: number) {
     const news = await this.em.findOne(News, {
-      where: { id: input.id },
+      where: { id: id },
       relations: ['tags', 'categories'],
     });
 
     if (!news) {
-      throw new NotFoundException(`News with ID: ${input.id} not found`);
+      throw new NotFoundException(`News with ID: ${id} not found`);
     }
 
-    await this.em.increment(News, { id: input.id }, 'viewCount', 1);
+    await this.em.increment(News, { id: id }, 'viewCount', 1);
     return news;
   }
 
-  async getNewsByTag(input: InputId) {
+  async getNewsByTag(tagId: number) {
     return this.em
       .createQueryBuilder(News, 'news')
       .leftJoinAndSelect('news.tags', 'tag')
-      .where('tag.id = :tagId', { tagId: input.id })
+      .where('tag.id = :tagId', { tagId: tagId })
       .getMany();
   }
 
@@ -57,11 +55,11 @@ export class NewsService {
     return await this.em.save(newNews);
   }
 
-  async updateNews(input: UpdateNewsInput) {
-    const news = await this.em.findOne(News, { where: { id: input.id } });
+  async updateNews(id: number, input: UpdateNewsInput) {
+    const news = await this.em.findOne(News, { where: { id: id } });
 
     if (!news) {
-      throw new NotFoundException(`News with ID: ${input.id} not found`);
+      throw new NotFoundException(`News with ID: ${id} not found`);
     }
 
     const image = await this.aws.uploadFile(await input.image);
@@ -76,15 +74,15 @@ export class NewsService {
     return this.em.save(news);
   }
 
-  async deleteNews(input: InputId) {
-    const news = await this.em.findOne(News, { where: { id: input.id } });
+  async deleteNews(id: number) {
+    const news = await this.em.findOne(News, { where: { id: id } });
     if (!news) {
-      throw new NotFoundException(`News with ID: ${input.id} not found`);
+      throw new NotFoundException(`News with ID: ${id} not found`);
     }
     const fileName = extractFileName(news.image);
 
     await this.aws.deleteImage(fileName);
-    await this.em.delete(News, { where: { id: input.id } });
+    await this.em.delete(News, { where: { id: id } });
     return news;
   }
 }

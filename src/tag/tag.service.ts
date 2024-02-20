@@ -1,10 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { EntityManager } from 'typeorm';
 import { Tag } from './domain/tag.entity';
-import { TagCreateInput } from './graphql/input/tag-create.input';
-import { TagUpdateInput } from './graphql/input/tag-update.input';
-import { InputId } from '../common/input/input-id';
-
+import { TagCreateInput } from './app/input/tag-create.input';
+import { TagUpdateInput } from './app/input/tag-update.input';
 @Injectable()
 export class TagService {
   constructor(protected readonly em: EntityManager) {}
@@ -18,18 +16,18 @@ export class TagService {
     return this.em.save(tag);
   }
 
-  async updateTag(input: TagUpdateInput) {
-    const tag = await this.em.findOne(Tag, { where: { id: input.id } });
+  async updateTag(id: number, input: TagUpdateInput) {
+    const tag = await this.em.findOne(Tag, { where: { id: id } });
 
     if (!tag) {
-      throw new NotFoundException(`Tag with ID: ${input.id} not found`);
+      throw new NotFoundException(`Tag with ID: ${id} not found`);
     }
 
     tag.name = input.name;
     return this.em.save(tag);
   }
 
-  async deleteTag(input: InputId) {
-    return this.em.delete(Tag, { where: { id: input.id } });
+  async deleteTag(id: number) {
+    return this.em.delete(Tag, { where: { id: id } });
   }
 }

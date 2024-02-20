@@ -1,9 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { EntityManager } from 'typeorm';
 import { Category } from './domain/category.entity';
-import { CategoryCreateInput } from './graphql/input/category-create.input';
-import { CategoryUpdateInput } from './graphql/input/category-update.input';
-import { InputId } from '../common/input/input-id';
+import { CategoryCreateInput } from './app/input/category-create.input';
+import { CategoryUpdateInput } from './app/input/category-update.input';
 
 @Injectable()
 export class CategoryService {
@@ -17,28 +16,28 @@ export class CategoryService {
     return this.em.save(category);
   }
 
-  async updateCategory(input: CategoryUpdateInput) {
+  async updateCategory(id: number, input: CategoryUpdateInput) {
     const category = await this.em.findOne(Category, {
-      where: { id: input.id },
+      where: { id: id },
     });
 
     if (!category) {
-      throw new NotFoundException(`Category with ID: ${input.id} not found`);
+      throw new NotFoundException(`Category with ID: ${id} not found`);
     }
 
     category.name = input.name;
     return this.em.save(category);
   }
 
-  async deleteCategory(input: InputId) {
+  async deleteCategory(id: number) {
     const category = await this.em.findOne(Category, {
-      where: { id: input.id },
+      where: { id: id },
     });
 
     if (!category) {
-      throw new NotFoundException(`Category with ID: ${input.id} not found`);
+      throw new NotFoundException(`Category with ID: ${id} not found`);
     }
 
-    return this.em.delete(Category, { where: { id: input.id } });
+    return this.em.delete(Category, { where: { id: id } });
   }
 }
