@@ -12,6 +12,10 @@ export class Tag {
   @Column()
   name: string;
 
+  @ApiProperty({ description: 'Link to resource' })
+  @Column()
+  link: string;
+
   @ApiProperty({
     description: 'The news associated with this tag',
     isArray: true,

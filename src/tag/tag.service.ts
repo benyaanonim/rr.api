@@ -12,7 +12,7 @@ export class TagService {
   }
 
   async createTag(input: TagCreateInput) {
-    const tag = this.em.create(Tag, { ...input });
+    const tag = this.em.create(Tag, { link: input.link, name: input.name });
     return this.em.save(tag);
   }
 
@@ -24,6 +24,7 @@ export class TagService {
     }
 
     tag.name = input.name;
+    tag.link = input.link;
     return this.em.save(tag);
   }
 
