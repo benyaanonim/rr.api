@@ -30,7 +30,22 @@ export class NewsService {
     }
 
     await this.em.increment(News, { id: id }, 'viewCount', 1);
-    return news;
+
+    const categoryIds = news.categories.map((category) => category.id);
+
+    const relatedNews = await this.em
+      .createQueryBuilder(News, 'relatedNews')
+      .leftJoinAndSelect('relatedNews.categories', 'category')
+      .where('category.id IN (:...categoryIds)', { categoryIds })
+      .andWhere('relatedNews.id != :newsId', { newsId: id })
+      .orderBy('relatedNews.publicationDate', 'DESC')
+      .take(2)
+      .getMany();
+
+    return {
+      news,
+      relatedNews,
+    };
   }
 
   async getNewsByTag(tagId: number) {
@@ -48,6 +63,7 @@ export class NewsService {
     newNews.text = input.text;
     newNews.publicationDate = new Date();
     newNews.image = image;
+    newNews.sources = input.sources;
     newNews.tags = await this.em.find(Tag, { where: { id: In(input.tags) } });
     newNews.categories = await this.em.find(Category, {
       where: { id: In(input.categories) },
@@ -66,6 +82,7 @@ export class NewsService {
     news.title = input.title;
     news.text = input.text;
     news.image = image;
+    news.sources = input.sources;
     news.tags = await this.em.find(Tag, { where: { id: In(input.tags) } });
     news.categories = await this.em.find(Category, {
       where: { id: In(input.categories) },

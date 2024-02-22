@@ -19,6 +19,17 @@ export class CreateNewsInput {
   text: string;
 
   @ApiProperty({
+    type: 'string',
+    isArray: true,
+    required: false,
+    description: 'Array of sources',
+  })
+  @IsArray()
+  @IsString({ each: true })
+  @IsOptional()
+  sources: string[];
+
+  @ApiProperty({
     type: 'number',
     isArray: true,
     required: false,

@@ -33,6 +33,13 @@ export class News {
   @ApiProperty({ example: 0, description: 'The view count of the news' })
   viewCount: number;
 
+  @Column('text', { array: true, default: [] })
+  @ApiProperty({
+    example: ['source1', 'source2'],
+    description: 'The sources of the news',
+  })
+  sources: string[];
+
   @Column()
   @ApiProperty({
     example: 'image.jpg',
