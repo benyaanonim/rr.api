@@ -23,7 +23,7 @@ services:
     depends_on:
       - postgres
     environment:
-      PGADMIN_DEFAULT_EMAIL: dev@bebs.app
+      PGADMIN_DEFAULT_EMAIL: dev@bebs.api
       PGADMIN_DEFAULT_PASSWORD: bebs
     ports:
       - '8081:80'

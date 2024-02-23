@@ -24,7 +24,7 @@ async function bootstrap() {
   await app.listen(PORT, () => {
     console.log(`Server started on ${PORT} port`);
   });
-  // get the swagger json file (if app is running in development mode)
+  // get the swagger json file (if api is running in development mode)
   if (process.env.NODE_ENV === 'development') {
     // write swagger ui files
     get(`${serverUrl}/swagger/swagger-ui-bundle.js`, function (response) {

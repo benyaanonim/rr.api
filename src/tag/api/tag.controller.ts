@@ -18,17 +18,21 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
+import { TagQueryRepo } from '../infrastructure/tag.query-repo';
 
 @ApiTags('tags')
 @Controller('tags')
 export class TagController {
-  constructor(protected readonly tagService: TagService) {}
+  constructor(
+    protected readonly tagService: TagService,
+    protected readonly tagQueryRepo: TagQueryRepo,
+  ) {}
 
   @Get()
   @ApiOperation({ summary: 'Get all tags' })
   @ApiResponse({ status: 200, type: Tag, isArray: true })
   async getTags(): Promise<Tag[]> {
-    return this.tagService.getTags();
+    return this.tagQueryRepo.getTags();
   }
 
   @Post()

@@ -503,6 +503,10 @@ window.onload = function() {
               "type": "string",
               "description": "The name of the tag"
             },
+            "link": {
+              "type": "string",
+              "description": "Link to resource"
+            },
             "news": {
               "description": "The news associated with this tag",
               "type": "array",
@@ -514,6 +518,7 @@ window.onload = function() {
           "required": [
             "id",
             "name",
+            "link",
             "news"
           ]
         },
@@ -565,6 +570,17 @@ window.onload = function() {
               "example": 0,
               "description": "The view count of the news"
             },
+            "sources": {
+              "example": [
+                "source1",
+                "source2"
+              ],
+              "description": "The sources of the news",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
             "image": {
               "type": "string",
               "example": "image.jpg",
@@ -596,6 +612,7 @@ window.onload = function() {
             "title",
             "text",
             "viewCount",
+            "sources",
             "image",
             "publicationDate",
             "tags",
@@ -610,6 +627,13 @@ window.onload = function() {
             },
             "text": {
               "type": "string"
+            },
+            "sources": {
+              "description": "Array of sources",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             },
             "categories": {
               "description": "Array of category IDs",
@@ -646,6 +670,13 @@ window.onload = function() {
             "text": {
               "type": "string"
             },
+            "sources": {
+              "description": "Array of sources",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
             "categories": {
               "description": "Array of category IDs",
               "type": "array",
@@ -678,10 +709,15 @@ window.onload = function() {
             "name": {
               "type": "string",
               "description": "Name of the tag"
+            },
+            "link": {
+              "type": "string",
+              "description": "Link to resource"
             }
           },
           "required": [
-            "name"
+            "name",
+            "link"
           ]
         },
         "TagUpdateInput": {
@@ -690,10 +726,15 @@ window.onload = function() {
             "name": {
               "type": "string",
               "description": "Name of the tag"
+            },
+            "link": {
+              "type": "string",
+              "description": "Link to resource"
             }
           },
           "required": [
-            "name"
+            "name",
+            "link"
           ]
         },
         "CategoryCreateInput": {

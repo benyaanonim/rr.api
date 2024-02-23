@@ -1,34 +1,31 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { EntityManager } from 'typeorm';
 import { Tag } from './domain/tag.entity';
-import { TagCreateInput } from './app/input/tag-create.input';
-import { TagUpdateInput } from './app/input/tag-update.input';
+import { TagCreateInput } from './api/input/tag-create.input';
+import { TagUpdateInput } from './api/input/tag-update.input';
+import { TagRepo } from './infrastructure/tag.repo';
 @Injectable()
 export class TagService {
-  constructor(protected readonly em: EntityManager) {}
-
-  async getTags() {
-    return this.em.find(Tag);
-  }
+  constructor(protected readonly tagRepo: TagRepo) {}
 
   async createTag(input: TagCreateInput) {
-    const tag = this.em.create(Tag, { link: input.link, name: input.name });
-    return this.em.save(tag);
+    const tag = new Tag();
+    tag.name = input.name;
+    tag.link = input.link;
+    return this.tagRepo.save(tag);
   }
 
   async updateTag(id: number, input: TagUpdateInput) {
-    const tag = await this.em.findOne(Tag, { where: { id: id } });
-
+    const tag = await this.tagRepo.findOne(id);
     if (!tag) {
       throw new NotFoundException(`Tag with ID: ${id} not found`);
     }
 
     tag.name = input.name;
     tag.link = input.link;
-    return this.em.save(tag);
+    return this.tagRepo.save(tag);
   }
 
   async deleteTag(id: number) {
-    return this.em.delete(Tag, { where: { id: id } });
+    return this.tagRepo.delete(id);
   }
 }

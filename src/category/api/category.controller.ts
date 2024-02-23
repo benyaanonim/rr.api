@@ -18,17 +18,21 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
+import { CategoryQueryRepo } from '../infrastructure/category.query-repo';
 
 @ApiTags('categories')
 @Controller('categories')
 export class CategoryController {
-  constructor(protected readonly categoryService: CategoryService) {}
+  constructor(
+    protected readonly categoryService: CategoryService,
+    protected readonly categoryQueryRepo: CategoryQueryRepo,
+  ) {}
 
   @Get()
   @ApiOperation({ summary: 'Get all categories' })
   @ApiResponse({ status: 200, type: Category, isArray: true })
   async getCategories(): Promise<Category[]> {
-    return this.categoryService.getCategories();
+    return this.categoryQueryRepo.getCategories();
   }
 
   @Post()

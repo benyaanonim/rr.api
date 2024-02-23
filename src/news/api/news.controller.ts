@@ -21,17 +21,21 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
+import { NewsQueryRepo } from '../infrastructure/news.query-repo';
 
 @ApiTags('news')
 @Controller('news')
 export class NewsController {
-  constructor(protected readonly newsService: NewsService) {}
+  constructor(
+    protected readonly newsService: NewsService,
+    protected readonly newsQueryRepo: NewsQueryRepo,
+  ) {}
 
   @Get()
   @ApiOperation({ summary: 'Get all news' })
   @ApiResponse({ status: 200, description: 'Return all news', type: [News] })
   async getNews(): Promise<News[]> {
-    return this.newsService.getNews();
+    return this.newsQueryRepo.getNews();
   }
 
   @Get(':id')
@@ -39,8 +43,8 @@ export class NewsController {
   @ApiParam({ name: 'id', type: 'number', description: 'News ID' })
   @ApiResponse({ status: 200, description: 'Return news by ID', type: News })
   @ApiResponse({ status: 404, description: 'News not found' })
-  async getNewsById(@Param('id') id: number): Promise<News> {
-    return this.newsService.getNewsById(id);
+  async getNewsById(@Param('id') id: number) {
+    return this.newsQueryRepo.getNewsById(id);
   }
 
   @Get('tag/:tagId')
@@ -48,7 +52,7 @@ export class NewsController {
   @ApiParam({ name: 'tagId', type: 'number', description: 'Tag ID' })
   @ApiResponse({ status: 200, description: 'Return news by tag', type: [News] })
   async getNewsByTag(@Param('tagId') tagId: number): Promise<News[]> {
-    return this.newsService.getNewsByTag(tagId);
+    return this.newsQueryRepo.getNewsByTag(tagId);
   }
 
   @Post()

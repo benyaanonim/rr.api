@@ -3,11 +3,22 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { NewsService } from './news.service';
 import { News } from './domain/news.entity';
 import { AwsService } from '../aws/aws.service';
-import { NewsController } from './app/news.controller';
+import { NewsController } from './api/news.controller';
+import { NewsRepo } from './infrastructure/news.repo';
+import { NewsQueryRepo } from './infrastructure/news.query-repo';
+import { TagQueryRepo } from '../tag/infrastructure/tag.query-repo';
+import { CategoryQueryRepo } from '../category/infrastructure/category.query-repo';
 
 @Module({
   imports: [TypeOrmModule.forFeature([News])],
-  providers: [NewsService, AwsService],
+  providers: [
+    NewsService,
+    AwsService,
+    NewsRepo,
+    NewsQueryRepo,
+    TagQueryRepo,
+    CategoryQueryRepo,
+  ],
   controllers: [NewsController],
 })
 export class NewsModule {}
