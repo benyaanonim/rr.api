@@ -1,0 +1,39 @@
+version: '3.6'
+services:
+  # Databases
+
+  postgres:
+    image: postgres:12-alpine
+    restart: unless-stopped
+    volumes:
+      - ./.docker/postgres/create-database.sh:/docker-entrypoint-initdb.d/create-database.sh
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: project
+      POSTGRES_DB: project
+      POSTGRES_PASSWORD: project
+
+  # Development Utils
+
+  pgadmin:
+    image: dpage/pgadmin4:6.8
+    restart: unless-stopped
+    depends_on:
+      - postgres
+    environment:
+      PGADMIN_DEFAULT_EMAIL: dev@bebs.api
+      PGADMIN_DEFAULT_PASSWORD: bebs
+    ports:
+      - '8081:80'
+
+volumes:
+  postgres-data:
+    driver: local
+#  minio-data:
+#    driver: local
+#  redis-data:
+#    driver: local
+#  elasticsearch-data:
+#    driver: local
