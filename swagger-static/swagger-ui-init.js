@@ -25,6 +25,41 @@ window.onload = function() {
           ]
         }
       },
+      "/auth/login": {
+        "post": {
+          "operationId": "AuthController_login",
+          "summary": "Login as an admin",
+          "parameters": [],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminInput"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Admin logged in successfully",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ResponseLogin"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized"
+            }
+          },
+          "tags": [
+            "auth"
+          ]
+        }
+      },
       "/news": {
         "get": {
           "operationId": "NewsController_getNews",
@@ -524,38 +559,63 @@ window.onload = function() {
           ]
         }
       },
-      "/auth/login": {
+      "/feedback-form": {
+        "get": {
+          "operationId": "FormController_forms",
+          "summary": "Retrieve all feedback forms",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "List of feedback forms",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Form"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "tags": [
+            "feedback-form"
+          ],
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        },
         "post": {
-          "operationId": "AuthController_login",
-          "summary": "Login as an admin",
+          "operationId": "FormController_createForm",
+          "summary": "Create a new feedback form",
+          "description": "This endpoint is throttled to limit the number of requests.",
           "parameters": [],
           "requestBody": {
             "required": true,
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AdminInput"
+                  "$ref": "#/components/schemas/CreateFormInput"
                 }
               }
             }
           },
           "responses": {
             "201": {
-              "description": "Admin logged in successfully",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ResponseLogin"
-                  }
-                }
-              }
+              "description": "Feedback form created"
             },
-            "401": {
-              "description": "Unauthorized"
+            "400": {
+              "description": "Bad request"
+            },
+            "429": {
+              "description": "Limiting the number of creations of review forms, one per day"
             }
           },
           "tags": [
-            "auth"
+            "feedback-form"
           ]
         }
       }
@@ -582,6 +642,37 @@ window.onload = function() {
         }
       },
       "schemas": {
+        "AdminInput": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "example": "string",
+              "description": "The name of the admin"
+            },
+            "password": {
+              "type": "string",
+              "example": "string",
+              "description": "The password of the admin"
+            }
+          },
+          "required": [
+            "name",
+            "password"
+          ]
+        },
+        "ResponseLogin": {
+          "type": "object",
+          "properties": {
+            "accessToken": {
+              "type": "string",
+              "description": "JWT token"
+            }
+          },
+          "required": [
+            "accessToken"
+          ]
+        },
         "Tag": {
           "type": "object",
           "properties": {
@@ -851,35 +942,53 @@ window.onload = function() {
             "name"
           ]
         },
-        "AdminInput": {
+        "Form": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "number",
+              "description": "Unique identifier of the form"
+            },
+            "name": {
+              "type": "string",
+              "description": "Name of the person who submitted the form"
+            },
+            "email": {
+              "type": "string",
+              "description": "Email address of the person who submitted the form"
+            },
+            "text": {
+              "type": "string",
+              "description": "Text content of the form"
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "email",
+            "text"
+          ]
+        },
+        "CreateFormInput": {
           "type": "object",
           "properties": {
             "name": {
               "type": "string",
-              "example": "string",
-              "description": "The name of the admin"
+              "description": "Name of the person submitting the form"
             },
-            "password": {
+            "email": {
               "type": "string",
-              "example": "string",
-              "description": "The password of the admin"
+              "description": "Email address of the person submitting the form"
+            },
+            "text": {
+              "type": "string",
+              "description": "Text content of the feedback form"
             }
           },
           "required": [
             "name",
-            "password"
-          ]
-        },
-        "ResponseLogin": {
-          "type": "object",
-          "properties": {
-            "accessToken": {
-              "type": "string",
-              "description": "JWT token"
-            }
-          },
-          "required": [
-            "accessToken"
+            "email",
+            "text"
           ]
         }
       }
