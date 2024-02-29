@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Put,
+  UseGuards,
+} from '@nestjs/common';
 import { FormService } from '../form.service';
 import { FormQueryRepo } from '../infrastructure/form.query-repo';
 import { CreateFormInput } from './input/create-form.input';
@@ -12,6 +20,8 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { Form } from '../domain/form.entity';
+import { UpdateStatusFormInput } from './input/update-status-form.input';
+import { Actor } from '../../common/decorators/actor.decrator';
 
 @ApiTags('feedback-form')
 @Controller('feedback-form')
@@ -34,8 +44,8 @@ export class FormController {
     return this.formQueryRepo.forms();
   }
 
-  @Throttle({ default: { limit: 86400, ttl: 1 } })
   @Post()
+  @Throttle(1, 86400)
   @ApiResponse({ status: 400, description: 'Bad request' })
   @ApiResponse({ status: 201, description: 'Feedback form created' })
   @ApiResponse({
@@ -50,5 +60,26 @@ export class FormController {
   @ApiBody({ type: CreateFormInput })
   async createForm(@Body() body: CreateFormInput) {
     return this.formService.createForm(body);
+  }
+
+  @Put(':formId')
+  @UseGuards(AdminGuard)
+  @ApiOperation({
+    summary: 'Update a status feedback form',
+    description: 'This endpoint is throttled to limit the number of requests.',
+  })
+  @ApiResponse({ status: 400, description: 'Bad request' })
+  @ApiResponse({ status: 201, description: 'Feedback form status update' })
+  @ApiResponse({
+    status: 429,
+    description: 'Rate limit',
+  })
+  @ApiBody({ type: UpdateStatusFormInput })
+  async updateStatusForm(
+    @Param('formId') formId: number,
+    @Body() body: UpdateStatusFormInput,
+    @Actor() actor,
+  ) {
+    return this.formService.updateFormStatus(body, formId, actor.sub);
   }
 }

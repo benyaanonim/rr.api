@@ -16,6 +16,7 @@ export class AuthService {
     if (adminName !== body.name || adminPass !== body.password) {
       throw new UnauthorizedException('Credentials is not valid');
     }
-    return this.jwtService.sign({ sub: adminName });
+    const token = this.jwtService.sign({ sub: adminName });
+    return { accessToken: token };
   }
 }

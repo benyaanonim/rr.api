@@ -26,4 +26,26 @@ export class Form {
     description: 'Text content of the form',
   })
   text: string;
+
+  @Column({ type: 'timestamp', name: 'created_at' })
+  @ApiProperty({ description: 'Created at Date form' })
+  createdAt: Date;
+
+  @Column({ default: false })
+  @ApiProperty({ description: 'Feedback form processing status' })
+  status: boolean;
+
+  @Column({ nullable: true, name: 'update_by' })
+  @ApiProperty({
+    description:
+      'Name of the admin who updated the status of the feedback form',
+  })
+  updatedBy: string;
+
+  @Column({ nullable: true, type: 'timestamp', name: 'updated_at' })
+  @ApiProperty({
+    description:
+      'Date and time when the status of the feedback form was updated',
+  })
+  updatedAt: Date;
 }

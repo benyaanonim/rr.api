@@ -618,6 +618,47 @@ window.onload = function() {
             "feedback-form"
           ]
         }
+      },
+      "/feedback-form/{formId}": {
+        "put": {
+          "operationId": "FormController_updateStatusForm",
+          "summary": "Update a status feedback form",
+          "description": "This endpoint is throttled to limit the number of requests.",
+          "parameters": [
+            {
+              "name": "formId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "number"
+              }
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateStatusFormInput"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Feedback form status update"
+            },
+            "400": {
+              "description": "Bad request"
+            },
+            "429": {
+              "description": "Rate limit"
+            }
+          },
+          "tags": [
+            "feedback-form"
+          ]
+        }
       }
     },
     "info": {
@@ -960,13 +1001,35 @@ window.onload = function() {
             "text": {
               "type": "string",
               "description": "Text content of the form"
+            },
+            "createdAt": {
+              "format": "date-time",
+              "type": "string",
+              "description": "Created at Date form"
+            },
+            "status": {
+              "type": "boolean",
+              "description": "Feedback form processing status"
+            },
+            "updatedBy": {
+              "type": "string",
+              "description": "Name of the admin who updated the status of the feedback form"
+            },
+            "updatedAt": {
+              "format": "date-time",
+              "type": "string",
+              "description": "Date and time when the status of the feedback form was updated"
             }
           },
           "required": [
             "id",
             "name",
             "email",
-            "text"
+            "text",
+            "createdAt",
+            "status",
+            "updatedBy",
+            "updatedAt"
           ]
         },
         "CreateFormInput": {
@@ -989,6 +1052,18 @@ window.onload = function() {
             "name",
             "email",
             "text"
+          ]
+        },
+        "UpdateStatusFormInput": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "boolean",
+              "description": "Feedback form status"
+            }
+          },
+          "required": [
+            "status"
           ]
         }
       }

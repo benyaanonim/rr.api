@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { FormRepo } from './infrastructure/form.repo';
 import { CreateFormInput } from './api/input/create-form.input';
 import { Form } from './domain/form.entity';
+import { UpdateStatusFormInput } from './api/input/update-status-form.input';
 
 @Injectable()
 export class FormService {
@@ -12,6 +13,26 @@ export class FormService {
     form.name = body.name;
     form.email = body.email;
     form.text = body.text;
+    form.createdAt = new Date();
+
+    return this.formRepo.save(form);
+  }
+
+  async updateFormStatus(
+    body: UpdateStatusFormInput,
+    formId: number,
+    adminName: string,
+  ) {
+    const form = await this.formRepo.findOne(formId);
+    if (!form) {
+      throw new NotFoundException(
+        `Feedback form for this ID: ${form} not found `,
+      );
+    }
+
+    form.status = body.status;
+    form.updatedBy = adminName;
+    form.updatedAt = new Date();
 
     return this.formRepo.save(form);
   }

@@ -21,7 +21,10 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
       isGlobal: true,
       envFilePath: '.env',
     }),
-    ThrottlerModule.forRoot(),
+    ThrottlerModule.forRoot({
+      ttl: 900,
+      limit: 15,
+    }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'swagger-static'),
       serveRoot: process.env.NODE_ENV === 'development' ? '/' : '/swagger',
@@ -55,12 +58,6 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
     FormModule,
   ],
   controllers: [AppController],
-  providers: [
-    AppService,
-    {
-      provide: APP_GUARD,
-      useClass: ThrottlerGuard,
-    },
-  ],
+  providers: [AppService, { provide: APP_GUARD, useClass: ThrottlerGuard }],
 })
 export class AppModule {}
