@@ -18,6 +18,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import {
   ApiBearerAuth,
   ApiBody,
+  ApiConsumes,
   ApiOperation,
   ApiParam,
   ApiResponse,
@@ -63,6 +64,7 @@ export class NewsController {
   @ApiBearerAuth()
   @UseInterceptors(FileInterceptor('image'))
   @ApiOperation({ summary: 'Create news' })
+  @ApiConsumes('multipart/form-data')
   @ApiBody({ type: CreateNewsInput })
   @ApiResponse({ status: 400, description: 'Bad request' })
   @UseInterceptors(FileInterceptor('image'))
