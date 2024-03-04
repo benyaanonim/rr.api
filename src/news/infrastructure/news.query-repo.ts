@@ -12,31 +12,29 @@ export class NewsQueryRepo {
 
   async getNewsById(id: number) {
     const news = await this.em.findOne(News, {
-      where: { id: id },
+      where: { id },
       relations: ['tags', 'categories'],
     });
 
     if (!news) {
-      throw new NotFoundException(`News with ID: ${id} not found`);
+      throw new NotFoundException(`Новости с ID: ${id} не найдены`);
     }
 
-    await this.em.increment(News, { id: id }, 'viewCount', 1);
+    await this.em.increment(News, { id }, 'viewCount', 1);
 
     const categoryIds = news.categories.map((category) => category.id);
+    const relatedNews = categoryIds.length
+      ? await this.em
+          .createQueryBuilder(News, 'relatedNews')
+          .leftJoinAndSelect('relatedNews.categories', 'category')
+          .where('category.id IN (:...categoryIds)', { categoryIds })
+          .andWhere('relatedNews.id != :newsId', { newsId: id })
+          .orderBy('relatedNews.publicationDate', 'DESC')
+          .take(2)
+          .getMany()
+      : [];
 
-    const relatedNews = await this.em
-      .createQueryBuilder(News, 'relatedNews')
-      .leftJoinAndSelect('relatedNews.categories', 'category')
-      .where('category.id IN (:...categoryIds)', { categoryIds })
-      .andWhere('relatedNews.id != :newsId', { newsId: id })
-      .orderBy('relatedNews.publicationDate', 'DESC')
-      .take(2)
-      .getMany();
-
-    return {
-      news,
-      relatedNews,
-    };
+    return { news, relatedNews };
   }
 
   async getNewsByTag(tagId: number) {

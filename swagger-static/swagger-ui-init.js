@@ -872,7 +872,7 @@ window.onload = function() {
               }
             },
             "image": {
-              "type": "string",
+              "type": "file",
               "format": "binary",
               "description": "Image file"
             }

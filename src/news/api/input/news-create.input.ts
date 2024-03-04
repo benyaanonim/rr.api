@@ -51,7 +51,7 @@ export class CreateNewsInput {
   @IsOptional()
   tags: number[];
 
-  @ApiProperty({ type: 'string', format: 'binary', description: 'Image file' })
+  @ApiProperty({ type: 'file', format: 'binary', description: 'Image file' })
   @IsOptional()
   image: Express.Multer.File;
 }
