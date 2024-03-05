@@ -4,10 +4,12 @@ import { ConfigService } from '@nestjs/config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { createWriteStream } from 'fs';
 import { get } from 'http';
+import { ValidationPipe } from '@nestjs/common';
 
 const serverUrl = 'http://localhost:3000';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.useGlobalPipes(new ValidationPipe());
   const configService = app.get(ConfigService);
   const PORT = configService.get<number>('PORT', 3000);
   app.enableCors();
