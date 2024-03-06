@@ -14,6 +14,8 @@ import { AuthModule } from './auth/auth.module';
 import { FormModule } from './ feedback-form/form.module';
 import { APP_GUARD } from '@nestjs/core';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { DeputyModule } from './deputy/deputy.module';
+import { PartyModule } from './party/party.module';
 
 @Module({
   imports: [
@@ -56,6 +58,8 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
     CategoryModule,
     AdminModule,
     FormModule,
+    DeputyModule,
+    PartyModule,
   ],
   controllers: [AppController],
   providers: [AppService, { provide: APP_GUARD, useClass: ThrottlerGuard }],
