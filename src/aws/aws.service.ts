@@ -3,6 +3,7 @@ import * as crypto from 'crypto';
 import * as AWS from 'aws-sdk';
 import { ConfigService } from '@nestjs/config';
 import { Readable } from 'stream';
+import { extractFileName } from '../helpers';
 
 @Injectable()
 export class AwsService {
@@ -60,7 +61,8 @@ export class AwsService {
     return Location;
   }
 
-  async deleteImage(fileName: string): Promise<void> {
+  async deleteImage(image: string): Promise<void> {
+    const fileName = extractFileName(image);
     const params = {
       Bucket: this.bucketName,
       Key: fileName,

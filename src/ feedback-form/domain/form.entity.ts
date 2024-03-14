@@ -17,6 +17,12 @@ export class Form {
 
   @Column()
   @ApiProperty({
+    description: 'Surname of the person who submitted the form',
+  })
+  surname: string;
+
+  @Column()
+  @ApiProperty({
     description: 'Email address of the person who submitted the form',
   })
   email: string;

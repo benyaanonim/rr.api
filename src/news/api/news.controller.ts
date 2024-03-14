@@ -9,8 +9,6 @@ import {
   UploadedFile,
   UseGuards,
   UseInterceptors,
-  UsePipes,
-  ValidationPipe,
 } from '@nestjs/common';
 import { NewsService } from '../news.service';
 import { News } from '../domain/news.entity';
@@ -28,9 +26,8 @@ import {
 } from '@nestjs/swagger';
 import { NewsQueryRepo } from '../infrastructure/news.query-repo';
 import { AdminGuard } from '../../common/guard/auth.guard';
-import { ParseFormDataPipe } from '../../common/pipe/form-data.pipe';
 
-@ApiTags('news')
+@ApiTags('News')
 @Controller('news')
 export class NewsController {
   constructor(

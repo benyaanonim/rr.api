@@ -7,9 +7,11 @@ import { CategoryRepo } from './infrastructure/category.repo';
 @Injectable()
 export class CategoryService {
   constructor(protected readonly categoryRepo: CategoryRepo) {}
-  async createCategory(input: CategoryCreateInput) {
+  async createCategory(input: CategoryCreateInput, adminName: string) {
     const category = new Category();
     category.name = input.name;
+    category.createdBy = adminName;
+    category.createdAt = new Date();
     return this.categoryRepo.save(category);
   }
 

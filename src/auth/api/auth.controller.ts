@@ -14,7 +14,7 @@ class ResponseLogin {
   accessToken: string;
 }
 
-@ApiTags('auth')
+@ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
   constructor(protected readonly authService: AuthService) {}

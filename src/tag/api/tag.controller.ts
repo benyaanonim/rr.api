@@ -23,7 +23,7 @@ import {
 import { TagQueryRepo } from '../infrastructure/tag.query-repo';
 import { AdminGuard } from '../../common/guard/auth.guard';
 
-@ApiTags('tags')
+@ApiTags('Tags')
 @Controller('tags')
 export class TagController {
   constructor(

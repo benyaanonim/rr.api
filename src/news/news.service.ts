@@ -40,8 +40,7 @@ export class NewsService {
     if (!news) {
       throw new NotFoundException(`News with ID: ${id} not found`);
     }
-    const fileName = extractFileName(news.image);
-    await this.aws.deleteImage(fileName);
+    await this.aws.deleteImage(news.image);
 
     const image = await this.aws.uploadFile(await input.image);
     news.title = input.title;
@@ -59,14 +58,15 @@ export class NewsService {
     if (!news) {
       throw new NotFoundException(`News with ID: ${id} not found`);
     }
-    const fileName = extractFileName(news.image);
-    const deleteResult = await this.newsRepo.delete(id);
-    if (deleteResult.affected === 0) {
+    try {
+      await this.aws.deleteImage(news.image);
+      await this.newsRepo.delete(id);
+    } catch (e) {
+      console.log(e);
       throw new InternalServerErrorException(
         `Failed to delete news with ID: ${id}`,
       );
     }
-    await this.aws.deleteImage(fileName);
     return news;
   }
 }

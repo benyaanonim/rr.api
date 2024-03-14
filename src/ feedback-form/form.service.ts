@@ -11,6 +11,7 @@ export class FormService {
   async createForm(body: CreateFormInput) {
     const form = new Form();
     form.name = body.name;
+    form.surname = body.surname;
     form.email = body.email;
     form.text = body.text;
     form.createdAt = new Date();

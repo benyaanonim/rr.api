@@ -22,8 +22,9 @@ import {
 } from '@nestjs/swagger';
 import { CategoryQueryRepo } from '../infrastructure/category.query-repo';
 import { AdminGuard } from '../../common/guard/auth.guard';
+import { Actor } from '../../common/decorators/actor.decrator';
 
-@ApiTags('categories')
+@ApiTags('Category')
 @Controller('categories')
 export class CategoryController {
   constructor(
@@ -45,8 +46,11 @@ export class CategoryController {
   @ApiBody({ type: CategoryCreateInput })
   @ApiResponse({ status: 201, type: Category })
   @ApiResponse({ status: 400, description: 'Bad request' })
-  async createCategory(@Body() input: CategoryCreateInput): Promise<Category> {
-    return this.categoryService.createCategory(input);
+  async createCategory(
+    @Body() input: CategoryCreateInput,
+    @Actor() actor,
+  ): Promise<Category> {
+    return this.categoryService.createCategory(input, actor.sub);
   }
 
   @Put(':id')

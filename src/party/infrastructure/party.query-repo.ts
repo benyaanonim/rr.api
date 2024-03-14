@@ -9,4 +9,8 @@ export class PartyQueryRepo {
   async findOne(id: number) {
     return this.em.findOneOrFail(Party, { where: { id: id } });
   }
+
+  async find() {
+    return this.em.find(Party);
+  }
 }

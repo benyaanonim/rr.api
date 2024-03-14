@@ -9,6 +9,13 @@ export class CreateFormInput {
   })
   name: string;
 
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty({
+    description: 'Surname of the person submitting the form',
+  })
+  surname: string;
+
   @IsEmail()
   @ApiProperty({
     description: 'Email address of the person submitting the form',

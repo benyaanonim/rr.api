@@ -1,14 +1,13 @@
 import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
-import { ApiResponse } from '@nestjs/swagger';
+import { ApiExcludeController } from '@nestjs/swagger';
 
-// @ApiExcludeEndpoint()
+@ApiExcludeController()
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get()
-  @ApiResponse({ description: 'default endpoint' })
   getHello(): string {
     return this.appService.getHello();
   }

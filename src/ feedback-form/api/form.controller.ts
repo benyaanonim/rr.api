@@ -23,7 +23,7 @@ import { Form } from '../domain/form.entity';
 import { UpdateStatusFormInput } from './input/update-status-form.input';
 import { Actor } from '../../common/decorators/actor.decrator';
 
-@ApiTags('feedback-form')
+@ApiTags('Feedback-form')
 @Controller('feedback-form')
 export class FormController {
   constructor(

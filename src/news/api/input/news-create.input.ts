@@ -8,12 +8,12 @@ import {
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateNewsInput {
-  @ApiProperty()
+  @ApiProperty({ type: 'string' })
   @IsNotEmpty()
   @IsString()
   title: string;
 
-  @ApiProperty()
+  @ApiProperty({ type: 'string' })
   @IsNotEmpty()
   @IsString()
   text: string;

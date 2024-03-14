@@ -11,17 +11,6 @@ window.onload = function() {
   "swaggerDoc": {
     "openapi": "3.0.0",
     "paths": {
-      "/": {
-        "get": {
-          "operationId": "AppController_getHello",
-          "parameters": [],
-          "responses": {
-            "default": {
-              "description": "default endpoint"
-            }
-          }
-        }
-      },
       "/auth/login": {
         "post": {
           "operationId": "AuthController_login",
@@ -53,7 +42,7 @@ window.onload = function() {
             }
           },
           "tags": [
-            "auth"
+            "Auth"
           ]
         }
       },
@@ -78,7 +67,7 @@ window.onload = function() {
             }
           },
           "tags": [
-            "news"
+            "News"
           ]
         },
         "post": {
@@ -101,7 +90,7 @@ window.onload = function() {
             }
           },
           "tags": [
-            "news"
+            "News"
           ],
           "security": [
             {
@@ -141,7 +130,7 @@ window.onload = function() {
             }
           },
           "tags": [
-            "news"
+            "News"
           ]
         },
         "put": {
@@ -187,7 +176,7 @@ window.onload = function() {
             }
           },
           "tags": [
-            "news"
+            "News"
           ],
           "security": [
             {
@@ -218,7 +207,7 @@ window.onload = function() {
             }
           },
           "tags": [
-            "news"
+            "News"
           ],
           "security": [
             {
@@ -258,7 +247,7 @@ window.onload = function() {
             }
           },
           "tags": [
-            "news"
+            "News"
           ]
         }
       },
@@ -283,7 +272,7 @@ window.onload = function() {
             }
           },
           "tags": [
-            "tags"
+            "Tags"
           ]
         },
         "post": {
@@ -316,7 +305,7 @@ window.onload = function() {
             }
           },
           "tags": [
-            "tags"
+            "Tags"
           ],
           "security": [
             {
@@ -369,7 +358,7 @@ window.onload = function() {
             }
           },
           "tags": [
-            "tags"
+            "Tags"
           ],
           "security": [
             {
@@ -400,7 +389,7 @@ window.onload = function() {
             }
           },
           "tags": [
-            "tags"
+            "Tags"
           ],
           "security": [
             {
@@ -430,7 +419,7 @@ window.onload = function() {
             }
           },
           "tags": [
-            "categories"
+            "Category"
           ]
         },
         "post": {
@@ -463,7 +452,7 @@ window.onload = function() {
             }
           },
           "tags": [
-            "categories"
+            "Category"
           ],
           "security": [
             {
@@ -516,7 +505,7 @@ window.onload = function() {
             }
           },
           "tags": [
-            "categories"
+            "Category"
           ],
           "security": [
             {
@@ -547,7 +536,7 @@ window.onload = function() {
             }
           },
           "tags": [
-            "categories"
+            "Category"
           ],
           "security": [
             {
@@ -577,7 +566,7 @@ window.onload = function() {
             }
           },
           "tags": [
-            "feedback-form"
+            "Feedback-form"
           ],
           "security": [
             {
@@ -612,7 +601,7 @@ window.onload = function() {
             }
           },
           "tags": [
-            "feedback-form"
+            "Feedback-form"
           ]
         }
       },
@@ -653,7 +642,7 @@ window.onload = function() {
             }
           },
           "tags": [
-            "feedback-form"
+            "Feedback-form"
           ]
         }
       },
@@ -678,7 +667,7 @@ window.onload = function() {
             }
           },
           "tags": [
-            "deputy"
+            "Deputy"
           ]
         },
         "post": {
@@ -711,7 +700,7 @@ window.onload = function() {
             }
           },
           "tags": [
-            "deputy"
+            "Deputy"
           ],
           "security": [
             {
@@ -757,7 +746,7 @@ window.onload = function() {
             }
           },
           "tags": [
-            "deputy"
+            "Deputy"
           ],
           "security": [
             {
@@ -787,7 +776,143 @@ window.onload = function() {
             }
           },
           "tags": [
-            "deputy"
+            "Deputy"
+          ]
+        }
+      },
+      "/party": {
+        "get": {
+          "operationId": "PartyController_parties",
+          "summary": "Get all parties",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "List of parties",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Party"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "tags": [
+            "Party"
+          ],
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        },
+        "post": {
+          "operationId": "PartyController_createParty",
+          "summary": "Create a new party",
+          "parameters": [],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "multipart/form-data": {
+                "schema": {
+                  "$ref": "#/components/schemas/PartyCreateInput"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Party created"
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          },
+          "tags": [
+            "Party"
+          ],
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        },
+        "delete": {
+          "operationId": "PartyController_deleteParty",
+          "summary": "Delete a party",
+          "parameters": [
+            {
+              "name": "id",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "number"
+              }
+            }
+          ],
+          "responses": {
+            "204": {
+              "description": "Party deleted"
+            },
+            "404": {
+              "description": "Party not found"
+            }
+          },
+          "tags": [
+            "Party"
+          ],
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/party/{id}": {
+        "put": {
+          "operationId": "PartyController_updateParty",
+          "summary": "Update a party",
+          "parameters": [
+            {
+              "name": "id",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "number"
+              }
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "multipart/form-data": {
+                "schema": {
+                  "$ref": "#/components/schemas/PartyUpdateInput"
+                }
+              }
+            }
+          },
+          "responses": {
+            "204": {
+              "description": "Party updated"
+            },
+            "400": {
+              "description": "Bad request"
+            },
+            "404": {
+              "description": "Party not found"
+            }
+          },
+          "tags": [
+            "Party"
+          ],
+          "security": [
+            {
+              "bearer": []
+            }
           ]
         }
       }
@@ -886,6 +1011,19 @@ window.onload = function() {
               "type": "string",
               "description": "The name of the category"
             },
+            "createdAt": {
+              "format": "date-time",
+              "type": "string",
+              "description": "Admin name will be created"
+            },
+            "accessible": {
+              "type": "boolean",
+              "description": "Display access by default true"
+            },
+            "createdBy": {
+              "type": "string",
+              "description": "Admin name will be created"
+            },
             "news": {
               "description": "The news associated with this category",
               "items": {
@@ -897,6 +1035,9 @@ window.onload = function() {
           "required": [
             "id",
             "name",
+            "createdAt",
+            "accessible",
+            "createdBy",
             "news"
           ]
         },
@@ -1124,6 +1265,10 @@ window.onload = function() {
               "type": "string",
               "description": "Name of the person who submitted the form"
             },
+            "surname": {
+              "type": "string",
+              "description": "Surname of the person who submitted the form"
+            },
             "email": {
               "type": "string",
               "description": "Email address of the person who submitted the form"
@@ -1154,6 +1299,7 @@ window.onload = function() {
           "required": [
             "id",
             "name",
+            "surname",
             "email",
             "text",
             "createdAt",
@@ -1169,6 +1315,10 @@ window.onload = function() {
               "type": "string",
               "description": "Name of the person submitting the form"
             },
+            "surname": {
+              "type": "string",
+              "description": "Surname of the person submitting the form"
+            },
             "email": {
               "type": "string",
               "description": "Email address of the person submitting the form"
@@ -1180,6 +1330,7 @@ window.onload = function() {
           },
           "required": [
             "name",
+            "surname",
             "email",
             "text"
           ]
@@ -1236,6 +1387,10 @@ window.onload = function() {
               "type": "number",
               "description": "ID of the party"
             },
+            "name": {
+              "type": "string",
+              "description": "Name of the party"
+            },
             "logo": {
               "type": "string",
               "description": "Logo URL of the party"
@@ -1265,6 +1420,7 @@ window.onload = function() {
           },
           "required": [
             "id",
+            "name",
             "logo",
             "background",
             "description",
@@ -1445,6 +1601,76 @@ window.onload = function() {
               }
             }
           }
+        },
+        "PartyCreateInput": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "convocationIds": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "description": "Array of Convocation ids"
+            },
+            "logo": {
+              "type": "file",
+              "format": "binary",
+              "description": "Image file"
+            },
+            "background": {
+              "type": "file",
+              "format": "binary",
+              "description": "Image file"
+            }
+          },
+          "required": [
+            "name",
+            "description",
+            "convocationIds",
+            "logo",
+            "background"
+          ]
+        },
+        "PartyUpdateInput": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "convocationIds": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "description": "Array of Convocation ids"
+            },
+            "logo": {
+              "type": "file",
+              "format": "binary",
+              "description": "Image file"
+            },
+            "background": {
+              "type": "file",
+              "format": "binary",
+              "description": "Image file"
+            }
+          },
+          "required": [
+            "name",
+            "description",
+            "convocationIds",
+            "logo",
+            "background"
+          ]
         }
       }
     }

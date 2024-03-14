@@ -16,6 +16,10 @@ export class Party {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @ApiProperty({ type: 'string', description: 'Name of the party' })
+  @Column()
+  name: string;
+
   @ApiProperty({ description: 'Logo URL of the party' })
   @Column()
   logo: string;
@@ -32,14 +36,16 @@ export class Party {
     description: 'Convocations associated with the party',
     type: [Convocation],
   })
-  @ManyToMany(() => Convocation, (convocation) => convocation.parties)
+  @ManyToMany(() => Convocation, (convocation) => convocation.parties, {
+    nullable: true,
+  })
   @JoinTable()
-  convocations: Convocation[];
+  convocations: Convocation[] | null;
 
   @ApiProperty({
     description: 'Deputies associated with the party',
     type: [Deputy],
   })
-  @OneToMany(() => Deputy, (deputy) => deputy.party)
-  deputies: Deputy[];
+  @OneToMany(() => Deputy, (deputy) => deputy.party, { nullable: true })
+  deputies: Deputy[] | null;
 }

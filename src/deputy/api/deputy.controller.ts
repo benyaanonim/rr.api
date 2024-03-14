@@ -27,7 +27,7 @@ import {
 } from '@nestjs/swagger';
 import { Deputy } from '../domain/deputy.entity';
 
-@ApiTags('deputy')
+@ApiTags('Deputy')
 @Controller('deputy')
 export class DeputyController {
   constructor(
@@ -74,11 +74,11 @@ export class DeputyController {
     @UploadedFiles()
     files: {
       photo?: Express.Multer.File;
-      backgroundImage?: Express.Multer.File;
+      background?: Express.Multer.File;
     },
   ) {
     input.photo = files.photo;
-    input.background = files.backgroundImage;
+    input.background = files.background;
     return this.deputyService.createDeputy(input);
   }
 

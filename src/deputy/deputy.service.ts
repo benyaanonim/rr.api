@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { DeputyRepo } from './infrastructure/deputy.repo';
 import { CreateDeputyInput } from './api/input/create-deputy.input';
 import { Deputy } from './domain/deputy.entity';
@@ -73,15 +73,21 @@ export class DeputyService {
 
   async deleteDeputy(id: number) {
     const deputy = await this.deputyRepo.findOne(id);
-    if (deputy.photo) {
-      const fileName = extractFileName(deputy.photo);
-      await this.aws.deleteImage(fileName);
-    }
-    if (deputy.background) {
-      const fileName = extractFileName(deputy.background);
-      await this.aws.deleteImage(fileName);
+    try {
+      if (deputy.photo) {
+        await this.aws.deleteImage(deputy.photo);
+      }
+      if (deputy.background) {
+        await this.aws.deleteImage(deputy.background);
+      }
+      await this.deputyRepo.delete(id);
+    } catch (e) {
+      console.log(e);
+      throw new InternalServerErrorException(
+        `Failed to delete deputy with ID: ${id}`,
+      );
     }
 
-    return this.deputyRepo.delete(id);
+    return deputy;
   }
 }
