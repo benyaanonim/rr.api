@@ -6,7 +6,11 @@ import { Form } from '../domain/form.entity';
 export class FormQueryRepo {
   constructor(protected readonly em: EntityManager) {}
 
-  async forms() {
+  async find() {
     return this.em.find(Form);
+  }
+
+  async findOne(id: number) {
+    return this.em.find(Form, { where: { id: id } });
   }
 }

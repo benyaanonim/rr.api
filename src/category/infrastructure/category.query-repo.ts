@@ -16,6 +16,6 @@ export class CategoryQueryRepo {
   }
 
   async findOne(categoryId: number) {
-    return this.em.findOneOrFail(Category, { where: { id: categoryId } });
+    return this.em.findOne(Category, { where: { id: categoryId } });
   }
 }

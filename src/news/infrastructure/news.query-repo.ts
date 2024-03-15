@@ -8,7 +8,7 @@ export class NewsQueryRepo {
   constructor(protected readonly em: EntityManager) {}
 
   async getNews() {
-    return this.em.find(News, { relations: ['tags', 'categories'] });
+    return this.em.find(News, { relations: ['tags', 'category'] });
   }
 
   async getNewsById(id: number) {
@@ -18,7 +18,7 @@ export class NewsQueryRepo {
     });
 
     if (!news) {
-      throw new NotFoundException(`News with ID: ${id} not found`);
+      return null;
     }
 
     await this.em.increment(News, { id }, 'viewCount', 1);
@@ -40,7 +40,7 @@ export class NewsQueryRepo {
   async getNewsByTag(tagId: number) {
     const tag = await this.em.findOne(Tag, { where: { id: tagId } });
     if (!tag) {
-      throw new NotFoundException(`Tag with this ID: ${tagId} was not found `);
+      return null;
     }
     return this.em
       .createQueryBuilder(News, 'news')

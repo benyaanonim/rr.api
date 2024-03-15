@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { FormRepo } from './infrastructure/form.repo';
 import { CreateFormInput } from './api/input/create-form.input';
 import { Form } from './domain/form.entity';
@@ -26,9 +26,7 @@ export class FormService {
   ) {
     const form = await this.formRepo.findOne(formId);
     if (!form) {
-      throw new NotFoundException(
-        `Feedback form for this ID: ${form} not found `,
-      );
+      return null;
     }
 
     form.status = body.status;

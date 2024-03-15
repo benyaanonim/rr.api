@@ -264,7 +264,7 @@ window.onload = function() {
                   "schema": {
                     "type": "array",
                     "items": {
-                      "$ref": "#/components/schemas/Tag"
+                      "$ref": "#/components/schemas/"
                     }
                   }
                 }
@@ -315,6 +315,38 @@ window.onload = function() {
         }
       },
       "/tags/{id}": {
+        "get": {
+          "operationId": "TagController_getTagById",
+          "summary": "Get tag by id",
+          "parameters": [
+            {
+              "name": "id",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "number"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Tag"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Tag not Found"
+            }
+          },
+          "tags": [
+            "Tags"
+          ]
+        },
         "put": {
           "operationId": "TagController_updateTag",
           "summary": "Update a tag",
@@ -411,7 +443,7 @@ window.onload = function() {
                   "schema": {
                     "type": "array",
                     "items": {
-                      "$ref": "#/components/schemas/Category"
+                      "$ref": "#/components/schemas/"
                     }
                   }
                 }
@@ -462,6 +494,38 @@ window.onload = function() {
         }
       },
       "/categories/{id}": {
+        "get": {
+          "operationId": "CategoryController_getCategoryById",
+          "summary": "Get category by id",
+          "parameters": [
+            {
+              "name": "id",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "number"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Category"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Category not found"
+            }
+          },
+          "tags": [
+            "Category"
+          ]
+        },
         "put": {
           "operationId": "CategoryController_updateCategory",
           "summary": "Update a category",
@@ -605,6 +669,45 @@ window.onload = function() {
           ]
         }
       },
+      "/feedback-form/{id}": {
+        "get": {
+          "operationId": "FormController_getFormById",
+          "summary": "Return feedback form by id",
+          "parameters": [
+            {
+              "name": "id",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "number"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "feedback form by id",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Form"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Form not found"
+            }
+          },
+          "tags": [
+            "Feedback-form"
+          ],
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
       "/feedback-form/{formId}": {
         "put": {
           "operationId": "FormController_updateStatusForm",
@@ -672,6 +775,7 @@ window.onload = function() {
         },
         "post": {
           "operationId": "DeputyController_createDeputy",
+          "summary": "Create deputy",
           "parameters": [],
           "requestBody": {
             "required": true,
@@ -710,8 +814,41 @@ window.onload = function() {
         }
       },
       "/deputy/{id}": {
+        "get": {
+          "operationId": "DeputyController_getDeputyById",
+          "summary": "Get deputy by id",
+          "parameters": [
+            {
+              "name": "id",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "number"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Return deputy by id",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Deputy"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Deputy not found"
+            }
+          },
+          "tags": [
+            "Deputy"
+          ]
+        },
         "put": {
           "operationId": "DeputyController_updateDeputy",
+          "summary": "Update deputy by id",
           "parameters": [
             {
               "name": "id",
@@ -756,6 +893,7 @@ window.onload = function() {
         },
         "delete": {
           "operationId": "DeputyController_deleteDeputy",
+          "summary": "Delete deputy by id",
           "parameters": [
             {
               "name": "id",
@@ -777,6 +915,11 @@ window.onload = function() {
           },
           "tags": [
             "Deputy"
+          ],
+          "security": [
+            {
+              "bearer": []
+            }
           ]
         }
       },
@@ -802,11 +945,6 @@ window.onload = function() {
           },
           "tags": [
             "Party"
-          ],
-          "security": [
-            {
-              "bearer": []
-            }
           ]
         },
         "post": {
@@ -829,6 +967,83 @@ window.onload = function() {
             },
             "400": {
               "description": "Bad request"
+            }
+          },
+          "tags": [
+            "Party"
+          ],
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/party/{id}": {
+        "get": {
+          "operationId": "PartyController_getPartyById",
+          "summary": "Get party by id",
+          "parameters": [
+            {
+              "name": "id",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "number"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Party"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Party not found"
+            }
+          },
+          "tags": [
+            "Party"
+          ]
+        },
+        "put": {
+          "operationId": "PartyController_updateParty",
+          "summary": "Update a party",
+          "parameters": [
+            {
+              "name": "id",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "number"
+              }
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "multipart/form-data": {
+                "schema": {
+                  "$ref": "#/components/schemas/PartyUpdateInput"
+                }
+              }
+            }
+          },
+          "responses": {
+            "204": {
+              "description": "Party updated"
+            },
+            "400": {
+              "description": "Bad request"
+            },
+            "404": {
+              "description": "Party not found"
             }
           },
           "tags": [
@@ -871,10 +1086,66 @@ window.onload = function() {
           ]
         }
       },
-      "/party/{id}": {
-        "put": {
-          "operationId": "PartyController_updateParty",
-          "summary": "Update a party",
+      "/convocation": {
+        "get": {
+          "operationId": "ConvocationController_convocations",
+          "summary": "Get all convocations",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "List of convocations",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Convocation"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "tags": [
+            "Convocation"
+          ]
+        },
+        "post": {
+          "operationId": "ConvocationController_createConvocation",
+          "summary": "Create a new convocation",
+          "parameters": [],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConvocationCreateInput"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Convocation created"
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          },
+          "tags": [
+            "Convocation"
+          ],
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/convocation/{id}": {
+        "get": {
+          "operationId": "ConvocationController_getConvocationById",
+          "summary": "Get convocation by id",
           "parameters": [
             {
               "name": "id",
@@ -885,29 +1156,93 @@ window.onload = function() {
               }
             }
           ],
+          "responses": {
+            "200": {
+              "description": "Get convocation by id",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Convocation"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Convocation not found"
+            }
+          },
+          "tags": [
+            "Convocation"
+          ]
+        },
+        "put": {
+          "operationId": "ConvocationController_updateConvocation",
+          "summary": "Update a convocation",
+          "parameters": [
+            {
+              "name": "id",
+              "required": true,
+              "in": "path",
+              "description": "Convocation ID",
+              "schema": {
+                "type": "number"
+              }
+            }
+          ],
           "requestBody": {
             "required": true,
             "content": {
-              "multipart/form-data": {
+              "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PartyUpdateInput"
+                  "$ref": "#/components/schemas/ConvocationUpdateInput"
                 }
               }
             }
           },
           "responses": {
-            "204": {
-              "description": "Party updated"
+            "200": {
+              "description": "Convocation updated"
             },
             "400": {
               "description": "Bad request"
             },
             "404": {
-              "description": "Party not found"
+              "description": "Convocation not found"
             }
           },
           "tags": [
-            "Party"
+            "Convocation"
+          ],
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        },
+        "delete": {
+          "operationId": "ConvocationController_deleteConvocation",
+          "summary": "Delete a convocation",
+          "parameters": [
+            {
+              "name": "id",
+              "required": true,
+              "in": "path",
+              "description": "Convocation ID",
+              "schema": {
+                "type": "number"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Convocation deleted"
+            },
+            "404": {
+              "description": "Convocation not found"
+            }
+          },
+          "tags": [
+            "Convocation"
           ],
           "security": [
             {
@@ -1670,6 +2005,30 @@ window.onload = function() {
             "convocationIds",
             "logo",
             "background"
+          ]
+        },
+        "ConvocationCreateInput": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "Convocation name"
+            }
+          },
+          "required": [
+            "name"
+          ]
+        },
+        "ConvocationUpdateInput": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "Convocation name"
+            }
+          },
+          "required": [
+            "name"
           ]
         }
       }

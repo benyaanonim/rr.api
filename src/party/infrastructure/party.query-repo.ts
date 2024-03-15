@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { EntityManager } from 'typeorm';
 import { Party } from '../domain/party.entity';
 
@@ -7,10 +7,13 @@ export class PartyQueryRepo {
   constructor(protected readonly em: EntityManager) {}
 
   async findOne(id: number) {
-    return this.em.findOneOrFail(Party, { where: { id: id } });
+    return this.em.findOne(Party, {
+      where: { id: id },
+      relations: ['deputies'],
+    });
   }
 
   async find() {
-    return this.em.find(Party);
+    return this.em.find(Party, { relations: ['deputies'] });
   }
 }

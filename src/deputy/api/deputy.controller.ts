@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  NotFoundException,
   Param,
   Post,
   Put,
@@ -46,6 +47,25 @@ export class DeputyController {
     return this.deputyQueryRepo.find();
   }
 
+  @Get(':id')
+  @ApiOperation({ summary: 'Get deputy by id' })
+  @ApiResponse({
+    status: 200,
+    description: 'Return deputy by id',
+    type: Deputy,
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Deputy not found',
+  })
+  async getDeputyById(@Param('id') id: number) {
+    const deputy = await this.deputyQueryRepo.findOne(id);
+    if (!deputy) {
+      throw new NotFoundException(`Deputy with this ID: ${id} was not found`);
+    }
+    return deputy;
+  }
+
   @Post()
   @UseGuards(AdminGuard)
   @UseInterceptors(
@@ -54,6 +74,7 @@ export class DeputyController {
       { name: 'background', maxCount: 1 },
     ]),
   )
+  @ApiOperation({ summary: 'Create deputy' })
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     description: 'Create a new deputy',
@@ -90,6 +111,7 @@ export class DeputyController {
       { name: 'background', maxCount: 1 },
     ]),
   )
+  @ApiOperation({ summary: 'Update deputy by id' })
   @ApiParam({ name: 'id', type: 'number', description: 'Deputy ID' })
   @ApiConsumes('multipart/form-data')
   @ApiBody({
@@ -120,18 +142,28 @@ export class DeputyController {
   ) {
     input.photo = files.photo;
     input.background = files.backgroundImage;
-    return this.deputyService.updateDeputy(input, id);
+    const deputy = await this.deputyService.updateDeputy(input, id);
+    if (!deputy) {
+      throw new NotFoundException(`Deputy with this ID: ${id} was not found`);
+    }
+    return deputy;
   }
 
   @Delete(':id')
   @UseGuards(AdminGuard)
+  @ApiOperation({ summary: 'Delete deputy by id' })
   @ApiParam({ name: 'id', type: 'number', description: 'Deputy ID' })
   @ApiResponse({
     status: 204,
     description: 'The deputy has been successfully deleted.',
   })
   @ApiResponse({ status: 404, description: 'Deputy not found' })
+  @ApiBearerAuth()
   async deleteDeputy(@Param('id') id: number) {
-    return this.deputyService.deleteDeputy(id);
+    const deputy = await this.deputyService.deleteDeputy(id);
+    if (!deputy) {
+      throw new NotFoundException(`Deputy with this ID: ${id} was not found`);
+    }
+    return deputy;
   }
 }

@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  NotFoundException,
   Param,
   Post,
   Put,
@@ -36,12 +37,22 @@ export class PartyController {
   ) {}
 
   @Get()
-  @UseGuards(AdminGuard)
   @ApiOperation({ summary: 'Get all parties' })
   @ApiResponse({ status: 200, description: 'List of parties', type: [Party] })
-  @ApiBearerAuth()
   async parties() {
     return this.partyQueryRepo.find();
+  }
+
+  @Get(':id')
+  @ApiOperation({ summary: 'Get party by id' })
+  @ApiResponse({ status: 200, type: Party })
+  @ApiResponse({ status: 404, description: 'Party not found' })
+  async getPartyById(@Param('id') id: number) {
+    const party = await this.partyQueryRepo.findOne(id);
+    if (!party) {
+      throw new NotFoundException(`Party with ID: ${id} not found`);
+    }
+    return party;
   }
 
   @Post()
@@ -101,7 +112,7 @@ export class PartyController {
     return this.partyService.updateParty(id, input);
   }
 
-  @Delete()
+  @Delete(':id')
   @UseGuards(AdminGuard)
   @ApiOperation({ summary: 'Delete a party' })
   @ApiParam({ name: 'id', type: 'number' })

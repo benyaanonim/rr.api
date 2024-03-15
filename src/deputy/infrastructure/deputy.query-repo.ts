@@ -6,6 +6,13 @@ import { Deputy } from '../domain/deputy.entity';
 export class DeputyQueryRepo {
   constructor(protected readonly em: EntityManager) {}
 
+  findOne(id: number) {
+    return this.em.findOne(Deputy, {
+      where: { id: id },
+      relations: ['party', 'convocations'],
+    });
+  }
+
   async find() {
     return this.em.find(Deputy);
   }

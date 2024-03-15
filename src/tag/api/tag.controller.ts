@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  NotFoundException,
   Param,
   Post,
   Put,
@@ -33,11 +34,22 @@ export class TagController {
 
   @Get()
   @ApiOperation({ summary: 'Get all tags' })
-  @ApiResponse({ status: 200, type: Tag, isArray: true })
+  @ApiResponse({ status: 200, type: [Tag], isArray: true })
   async getTags(): Promise<Tag[]> {
     return this.tagQueryRepo.getTags();
   }
 
+  @Get(':id')
+  @ApiOperation({ summary: 'Get tag by id' })
+  @ApiResponse({ status: 200, type: Tag })
+  @ApiResponse({ status: 404, description: 'Tag not Found' })
+  async getTagById(@Param('id') id: number): Promise<Tag> {
+    const tag = await this.tagQueryRepo.findOne(id);
+    if (!tag) {
+      throw new NotFoundException(`Tag with ID: ${id} not found`);
+    }
+    return tag;
+  }
   @Post()
   @UseGuards(AdminGuard)
   @ApiBearerAuth()

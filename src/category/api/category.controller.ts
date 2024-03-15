@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  NotFoundException,
   Param,
   Post,
   Put,
@@ -34,9 +35,21 @@ export class CategoryController {
 
   @Get()
   @ApiOperation({ summary: 'Get all categories' })
-  @ApiResponse({ status: 200, type: Category, isArray: true })
+  @ApiResponse({ status: 200, type: [Category], isArray: true })
   async getCategories(): Promise<Category[]> {
     return this.categoryQueryRepo.getCategories();
+  }
+
+  @Get(':id')
+  @ApiOperation({ summary: 'Get category by id' })
+  @ApiResponse({ status: 200, type: Category })
+  @ApiResponse({ status: 404, description: 'Category not found' })
+  async getCategoryById(@Param('id') id: number): Promise<Category> {
+    const category = await this.categoryQueryRepo.findOne(id);
+    if (!category) {
+      throw new NotFoundException(`Category with this ID: ${id} was not found`);
+    }
+    return category;
   }
 
   @Post()
@@ -64,13 +77,17 @@ export class CategoryController {
   })
   @ApiBody({ type: CategoryUpdateInput })
   @ApiResponse({ status: 200, type: Category })
-  @ApiResponse({ status: 404, description: 'Category not found' })
   @ApiResponse({ status: 400, description: 'Bad request' })
+  @ApiResponse({ status: 404, description: 'Category not found' })
   async updateCategory(
     @Param('id') id: number,
     @Body() input: CategoryUpdateInput,
   ): Promise<Category> {
-    return this.categoryService.updateCategory(id, input);
+    const category = await this.categoryService.updateCategory(id, input);
+    if (!category) {
+      throw new NotFoundException(`Category with this ID: ${id} was not found`);
+    }
+    return null;
   }
 
   @Delete(':id')
@@ -85,6 +102,10 @@ export class CategoryController {
   @ApiResponse({ status: 204 })
   @ApiResponse({ status: 404, description: 'Category not found' })
   async deleteCategory(@Param('id') id: number) {
-    return this.categoryService.deleteCategory(id);
+    const isDeleted = await this.categoryService.deleteCategory(id);
+    if (!isDeleted) {
+      throw new NotFoundException(`Category with this ID: ${id} was not found`);
+    }
+    return isDeleted;
   }
 }

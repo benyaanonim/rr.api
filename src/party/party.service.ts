@@ -1,4 +1,8 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { PartyRepo } from './infrastructure/party.repo';
 import { PartyCreateInput } from './api/input/party-create.input';
 import { AwsService } from '../aws/aws.service';
@@ -34,7 +38,9 @@ export class PartyService {
 
   async updateParty(id: number, input: PartyUpdateInput) {
     const party = await this.partyRepo.findOne(id);
-
+    if (!party) {
+      throw new NotFoundException(`Party with ID: ${id} not found`);
+    }
     if (input.logo) {
       if (party.logo) {
         await this.aws.deleteImage(party.logo);
@@ -59,6 +65,9 @@ export class PartyService {
 
   async deleteParty(id: number) {
     const party = await this.partyRepo.findOne(id);
+    if (!party) {
+      throw new NotFoundException(`Party with ID: ${id} not found`);
+    }
     try {
       await this.aws.deleteImage(party.logo);
       await this.aws.deleteImage(party.background);

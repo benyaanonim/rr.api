@@ -7,7 +7,7 @@ export class DeputyRepo {
   constructor(protected readonly em: EntityManager) {}
 
   async findOne(id: number) {
-    return this.em.findOneOrFail(Deputy, { where: { id: id } });
+    return this.em.findOne(Deputy, { where: { id: id } });
   }
   async save(deputy: Deputy) {
     return this.em.save(deputy);

@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  NotFoundException,
   Param,
   Post,
   Put,
@@ -48,7 +49,11 @@ export class NewsController {
   @ApiResponse({ status: 200, description: 'Return news by ID', type: News })
   @ApiResponse({ status: 404, description: 'News not found' })
   async getNewsById(@Param('id') id: number) {
-    return this.newsQueryRepo.getNewsById(id);
+    const news = await this.newsQueryRepo.getNewsById(id);
+    if (!news) {
+      throw new NotFoundException(`News with ID: ${id} not found`);
+    }
+    return news;
   }
 
   @Get('tag/:tagId')
@@ -56,7 +61,11 @@ export class NewsController {
   @ApiParam({ name: 'tagId', type: 'number', description: 'Tag ID' })
   @ApiResponse({ status: 200, description: 'Return news by tag', type: [News] })
   async getNewsByTag(@Param('tagId') tagId: number): Promise<News[]> {
-    return this.newsQueryRepo.getNewsByTag(tagId);
+    const news = await this.newsQueryRepo.getNewsByTag(tagId);
+    if (!news) {
+      throw new NotFoundException(`Tag with this ID: ${tagId} was not found`);
+    }
+    return news;
   }
 
   @Post()
@@ -84,15 +93,19 @@ export class NewsController {
   @ApiParam({ name: 'id', type: 'number', description: 'News ID' })
   @ApiBody({ type: UpdateNewsInput })
   @ApiResponse({ status: 200, description: 'News updated', type: News })
-  @ApiResponse({ status: 404, description: 'News not found' })
   @ApiResponse({ status: 400, description: 'Bad request' })
+  @ApiResponse({ status: 404, description: 'News not found' })
   async updateNews(
     @Param('id') id: number,
     @Body() input: UpdateNewsInput,
     @UploadedFile() file,
   ): Promise<News> {
     input.image = file;
-    return this.newsService.updateNews(id, input);
+    const news = await this.newsService.updateNews(id, input);
+    if (!news) {
+      throw new NotFoundException(`News with ID: ${id} not found`);
+    }
+    return news;
   }
 
   @Delete(':id')
@@ -103,6 +116,10 @@ export class NewsController {
   @ApiResponse({ status: 204, description: 'News deleted' })
   @ApiResponse({ status: 404, description: 'News not found' })
   async deleteNews(@Param('id') id: number): Promise<News> {
-    return this.newsService.deleteNews(id);
+    const isDeleted = await this.newsService.deleteNews(id);
+    if (!isDeleted) {
+      throw new NotFoundException(`News with ID: ${id} not found`);
+    }
+    return isDeleted;
   }
 }

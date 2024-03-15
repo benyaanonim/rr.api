@@ -6,6 +6,10 @@ import { Tag } from '../domain/tag.entity';
 export class TagQueryRepo {
   constructor(protected readonly em: EntityManager) {}
 
+  async findOne(id: number) {
+    return this.em.findOne(Tag, { where: { id: id } });
+  }
+
   async getTags() {
     return this.em.find(Tag);
   }

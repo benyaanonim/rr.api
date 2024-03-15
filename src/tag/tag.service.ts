@@ -26,6 +26,10 @@ export class TagService {
   }
 
   async deleteTag(id: number) {
-    return this.tagRepo.delete(id);
+    const isDeleted = await this.tagRepo.delete(id);
+    if (!isDeleted.affected) {
+      throw new NotFoundException(`Tag with ID: ${id} not found`);
+    }
+    return isDeleted;
   }
 }

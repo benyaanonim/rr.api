@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Category } from './domain/category.entity';
 import { CategoryCreateInput } from './api/input/category-create.input';
 import { CategoryUpdateInput } from './api/input/category-update.input';
@@ -19,7 +19,7 @@ export class CategoryService {
     const category = await this.categoryRepo.findOne(id);
 
     if (!category) {
-      throw new NotFoundException(`Category with ID: ${id} not found`);
+      return null;
     }
 
     category.name = input.name;
@@ -28,12 +28,6 @@ export class CategoryService {
   }
 
   async deleteCategory(id: number) {
-    const category = await this.categoryRepo.findOne(id);
-
-    if (!category) {
-      throw new NotFoundException(`Category with ID: ${id} not found`);
-    }
-
     return this.categoryRepo.delete(id);
   }
 }

@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, UnauthorizedException } from '@nestjs/common';
 import { AuthService } from '../auth.service';
 import { AdminInput } from './input/admin.credentials.input';
 import {
@@ -29,6 +29,10 @@ export class AuthController {
   @ApiBody({ type: AdminInput })
   @Post('login')
   async login(@Body() body: AdminInput) {
-    return this.authService.login(body);
+    const resultAuth = await this.authService.login(body);
+    if (!resultAuth) {
+      throw new UnauthorizedException('Credentials is not valid');
+    }
+    return resultAuth;
   }
 }

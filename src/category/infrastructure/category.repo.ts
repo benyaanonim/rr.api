@@ -15,6 +15,12 @@ export class CategoryRepo {
   }
 
   async delete(categoryId: number) {
-    return this.em.delete(Category, { where: { id: categoryId } });
+    const isDeleted = await this.em.delete(Category, {
+      where: { id: categoryId },
+    });
+    if (!isDeleted.affected) {
+      return null;
+    }
+    return isDeleted;
   }
 }

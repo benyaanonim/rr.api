@@ -17,13 +17,13 @@ export class Convocation {
     description: 'Parties associated with the convocation',
     type: [Party],
   })
-  @ManyToMany(() => Party, (party) => party.convocations)
-  parties: Party[];
+  @ManyToMany(() => Party, (party) => party.convocations, { nullable: true })
+  parties: Party[] | null;
 
   @ApiProperty({
     description: 'Deputies associated with the convocation',
     type: [Deputy],
   })
-  @ManyToMany(() => Deputy, (deputy) => deputy.convocations)
-  deputies: Deputy[];
+  @ManyToMany(() => Deputy, (deputy) => deputy.convocations, { nullable: true })
+  deputies: Deputy[] | null;
 }

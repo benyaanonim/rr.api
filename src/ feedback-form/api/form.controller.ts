@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  NotFoundException,
   Param,
   Post,
   Put,
@@ -41,7 +42,30 @@ export class FormController {
   })
   @ApiBearerAuth()
   async forms() {
-    return this.formQueryRepo.forms();
+    return this.formQueryRepo.find();
+  }
+
+  @Get(':id')
+  @UseGuards(AdminGuard)
+  @ApiOperation({ summary: 'Return feedback form by id' })
+  @ApiResponse({
+    status: 200,
+    description: 'feedback form by id',
+    type: Form,
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Form not found',
+  })
+  @ApiBearerAuth()
+  async getFormById(@Param('id') id: number) {
+    const form = await this.formQueryRepo.findOne(id);
+    if (!form) {
+      throw new NotFoundException(
+        `Feedback form for this ID: ${id} not found `,
+      );
+    }
+    return form;
   }
 
   @Post()
@@ -80,6 +104,16 @@ export class FormController {
     @Body() body: UpdateStatusFormInput,
     @Actor() actor,
   ) {
-    return this.formService.updateFormStatus(body, formId, actor.sub);
+    const form = await this.formService.updateFormStatus(
+      body,
+      formId,
+      actor.sub,
+    );
+    if (!form) {
+      throw new NotFoundException(
+        `Feedback form for this ID: ${formId} not found `,
+      );
+    }
+    return form;
   }
 }

@@ -38,10 +38,10 @@ export class NewsService {
     const news = await this.newsRepo.findOne(id);
 
     if (!news) {
-      throw new NotFoundException(`News with ID: ${id} not found`);
+      return null;
     }
-    await this.aws.deleteImage(news.image);
 
+    await this.aws.deleteImage(news.image);
     const image = await this.aws.uploadFile(await input.image);
     news.title = input.title;
     news.text = input.text;
@@ -56,7 +56,7 @@ export class NewsService {
   async deleteNews(id: number) {
     const news = await this.newsRepo.findOne(id);
     if (!news) {
-      throw new NotFoundException(`News with ID: ${id} not found`);
+      return null;
     }
     try {
       await this.aws.deleteImage(news.image);

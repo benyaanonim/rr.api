@@ -41,6 +41,9 @@ export class DeputyService {
 
   async updateDeputy(input: UpdateDeputyInput, id: number) {
     const deputy = await this.deputyRepo.findOne(id);
+    if (!deputy) {
+      return null;
+    }
 
     if (input.photo) {
       if (deputy.photo) {
@@ -73,6 +76,9 @@ export class DeputyService {
 
   async deleteDeputy(id: number) {
     const deputy = await this.deputyRepo.findOne(id);
+    if (!deputy) {
+      return null;
+    }
     try {
       if (deputy.photo) {
         await this.aws.deleteImage(deputy.photo);
