@@ -13,7 +13,7 @@ export class NewsQueryRepo {
 
   async getNewsById(id: number) {
     const news = await this.em.findOne(News, {
-      where: { id },
+      where: { id: id },
       relations: ['tags', 'category'],
     });
 
@@ -21,10 +21,13 @@ export class NewsQueryRepo {
       return null;
     }
 
-    await this.em.increment(News, { id }, 'viewCount', 1);
+    await this.em.increment(News, { id: id }, 'viewCount', 1);
+
+    if (!news.category) {
+      return news;
+    }
 
     const categoryId = news.category.id;
-
     const relatedNews = await this.em
       .createQueryBuilder(News, 'relatedNews')
       .leftJoinAndSelect('relatedNews.category', 'category')

@@ -4,7 +4,6 @@ import {
   Column,
   ManyToMany,
   JoinTable,
-  OneToMany,
   ManyToOne,
 } from 'typeorm';
 import { Category } from '../../category/domain/category.entity';
@@ -35,12 +34,11 @@ export class News {
   @ApiProperty({ example: 0, description: 'The view count of the news' })
   viewCount: number;
 
-  @Column('text', { array: true, default: [] })
+  @Column({ nullable: true })
   @ApiProperty({
-    example: ['source1', 'source2'],
     description: 'The sources of the news',
   })
-  sources: string[];
+  sources: string | null;
 
   @Column()
   @ApiProperty({

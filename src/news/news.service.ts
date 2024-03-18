@@ -1,13 +1,8 @@
-import {
-  Injectable,
-  InternalServerErrorException,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { News } from './domain/news.entity';
 import { CreateNewsInput } from './api/input/news-create.input';
 import { AwsService } from '../aws/aws.service';
 import { UpdateNewsInput } from './api/input/news-update.input';
-import { extractFileName } from '../helpers';
 import { NewsRepo } from './infrastructure/news.repo';
 import { TagQueryRepo } from '../tag/infrastructure/tag.query-repo';
 import { CategoryQueryRepo } from '../category/infrastructure/category.query-repo';

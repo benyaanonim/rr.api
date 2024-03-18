@@ -1400,15 +1400,8 @@ window.onload = function() {
               "description": "The view count of the news"
             },
             "sources": {
-              "example": [
-                "source1",
-                "source2"
-              ],
-              "description": "The sources of the news",
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
+              "type": "string",
+              "description": "The sources of the news"
             },
             "image": {
               "type": "string",
@@ -1459,11 +1452,7 @@ window.onload = function() {
               "type": "string"
             },
             "sources": {
-              "description": "Array of sources",
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
+              "type": "string"
             },
             "categoryId": {
               "type": "number",
@@ -1499,11 +1488,7 @@ window.onload = function() {
               "type": "string"
             },
             "sources": {
-              "description": "Array of sources",
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
+              "type": "string"
             },
             "categoryId": {
               "description": "Array of category IDs",
