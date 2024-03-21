@@ -36,14 +36,19 @@ export class NewsService {
       return null;
     }
 
-    await this.aws.deleteImage(news.image);
-    const image = await this.aws.uploadFile(await input.image);
-    news.title = input.title;
-    news.text = input.text;
-    news.image = image;
-    news.sources = input.sources;
-    news.tags = await this.tagQueryRepo.find(input.tags);
-    news.category = await this.categoryQueryRepo.findOne(input.categoryId);
+    if (input.image) {
+      if (news.image) {
+        await this.aws.deleteImage(news.image);
+      }
+      news.image = await this.aws.uploadFile(await input.image);
+    }
+
+    news.title = input.title ?? news.title;
+    news.text = input.text ?? news.text;
+    news.sources = input.sources ?? news.sources;
+    news.tags = (await this.tagQueryRepo.find(input.tags)) ?? news.tags;
+    news.category =
+      (await this.categoryQueryRepo.findOne(input.categoryId)) ?? news.category;
 
     return this.newsRepo.save(news);
   }

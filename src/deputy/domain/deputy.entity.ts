@@ -1,14 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  Column,
-  Entity,
-  JoinTable,
-  ManyToMany,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Party } from '../../party/domain/party.entity';
-import { Convocation } from '../../convocation/domain/convocation.entity';
 
 export enum Gender {
   male = 'male',
@@ -52,17 +44,6 @@ export class Deputy {
   @ApiProperty({ description: 'Gender of the deputy', enum: Gender })
   @Column({ type: 'enum', enum: Gender })
   gender: Gender;
-
-  @ApiProperty({
-    description: 'Convocations associated with the deputy',
-    type: [Convocation],
-    required: false,
-  })
-  @ManyToMany(() => Convocation, (convocation) => convocation.deputies, {
-    nullable: true,
-  })
-  @JoinTable()
-  convocations: Convocation[] | null;
 
   @ApiProperty({
     description: 'Party associated with the deputy',

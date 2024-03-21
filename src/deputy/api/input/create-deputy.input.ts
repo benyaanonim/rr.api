@@ -51,12 +51,4 @@ export class CreateDeputyInput {
   @IsNumber()
   @IsOptional()
   partyId: number | null;
-
-  @ApiProperty({
-    description: 'Convocations of the deputy',
-    type: [Number],
-    required: false,
-  })
-  @IsOptional()
-  convocations: number[] | null;
 }

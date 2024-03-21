@@ -6,7 +6,6 @@ import { AwsService } from '../aws/aws.service';
 import { PartyQueryRepo } from '../party/infrastructure/party.query-repo';
 import { ConvocationQueryRepo } from '../convocation/infrastructure/convocation.query-repo';
 import { UpdateDeputyInput } from './api/input/update-deputy.input';
-import { extractFileName } from '../helpers';
 
 @Injectable()
 export class DeputyService {
@@ -34,7 +33,6 @@ export class DeputyService {
     deputy.photo = photo;
     deputy.background = background;
     deputy.party = await this.pqr.findOne(input.partyId);
-    deputy.convocations = await this.cqr.find(input.convocations);
 
     return this.deputyRepo.save(deputy);
   }
@@ -67,10 +65,6 @@ export class DeputyService {
     deputy.party = input.partyId
       ? await this.pqr.findOne(input.partyId)
       : deputy.party;
-    deputy.convocations = input.convocations
-      ? await this.cqr.find(input.convocations)
-      : deputy.convocations;
-
     return this.deputyRepo.save(deputy);
   }
 

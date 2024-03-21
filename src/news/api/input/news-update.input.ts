@@ -49,5 +49,5 @@ export class UpdateNewsInput {
 
   @ApiProperty({ type: 'string', format: 'binary', description: 'Image file' })
   @IsOptional()
-  image: Express.Multer.File;
+  image?: Express.Multer.File | null;
 }

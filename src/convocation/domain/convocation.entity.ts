@@ -1,7 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Party } from '../../party/domain/party.entity';
-import { Deputy } from '../../deputy/domain/deputy.entity';
 
 @Entity()
 export class Convocation {
@@ -19,11 +18,4 @@ export class Convocation {
   })
   @ManyToMany(() => Party, (party) => party.convocations, { nullable: true })
   parties: Party[] | null;
-
-  @ApiProperty({
-    description: 'Deputies associated with the convocation',
-    type: [Deputy],
-  })
-  @ManyToMany(() => Deputy, (deputy) => deputy.convocations, { nullable: true })
-  deputies: Deputy[] | null;
 }

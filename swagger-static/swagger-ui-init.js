@@ -150,7 +150,7 @@ window.onload = function() {
           "requestBody": {
             "required": true,
             "content": {
-              "application/json": {
+              "multipart/form-data": {
                 "schema": {
                   "$ref": "#/components/schemas/UpdateNewsInput"
                 }
@@ -1684,20 +1684,12 @@ window.onload = function() {
               "items": {
                 "type": "array"
               }
-            },
-            "deputies": {
-              "description": "Deputies associated with the convocation",
-              "type": "array",
-              "items": {
-                "type": "array"
-              }
             }
           },
           "required": [
             "id",
             "name",
-            "parties",
-            "deputies"
+            "parties"
           ]
         },
         "Party": {
@@ -1788,13 +1780,6 @@ window.onload = function() {
                 "female"
               ]
             },
-            "convocations": {
-              "description": "Convocations associated with the deputy",
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/Convocation"
-              }
-            },
             "party": {
               "description": "Party associated with the deputy",
               "allOf": [
@@ -1854,13 +1839,6 @@ window.onload = function() {
             "partyId": {
               "type": "number",
               "description": "Party ID of the deputy"
-            },
-            "convocations": {
-              "description": "Convocations of the deputy",
-              "type": "array",
-              "items": {
-                "type": "number"
-              }
             }
           },
           "required": [
@@ -1912,13 +1890,6 @@ window.onload = function() {
             "partyId": {
               "type": "number",
               "description": "Party ID of the deputy"
-            },
-            "convocations": {
-              "description": "Convocations of the deputy",
-              "type": "array",
-              "items": {
-                "type": "number"
-              }
             }
           }
         },

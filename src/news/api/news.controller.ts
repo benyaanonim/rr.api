@@ -90,6 +90,7 @@ export class NewsController {
   @ApiBearerAuth()
   @UseInterceptors(FileInterceptor('image'))
   @ApiOperation({ summary: 'Update news' })
+  @ApiConsumes('multipart/form-data')
   @ApiParam({ name: 'id', type: 'number', description: 'News ID' })
   @ApiBody({ type: UpdateNewsInput })
   @ApiResponse({ status: 200, description: 'News updated', type: News })
@@ -98,7 +99,7 @@ export class NewsController {
   async updateNews(
     @Param('id') id: number,
     @Body() input: UpdateNewsInput,
-    @UploadedFile() file,
+    @UploadedFile() file?,
   ): Promise<News> {
     input.image = file;
     const news = await this.newsService.updateNews(id, input);
