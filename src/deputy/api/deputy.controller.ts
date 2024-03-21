@@ -10,13 +10,13 @@ import {
   UploadedFiles,
   UseGuards,
   UseInterceptors,
-} from '@nestjs/common';
-import { DeputyService } from '../deputy.service';
-import { DeputyQueryRepo } from '../infrastructure/deputy.query-repo';
-import { AdminGuard } from '../../common/guard/auth.guard';
-import { CreateDeputyInput } from './input/create-deputy.input';
-import { FileFieldsInterceptor } from '@nestjs/platform-express';
-import { UpdateDeputyInput } from './input/update-deputy.input';
+} from '@nestjs/common'
+import { DeputyService } from '../deputy.service'
+import { DeputyQueryRepo } from '../infrastructure/deputy.query-repo'
+import { AdminGuard } from '../../common/guard/auth.guard'
+import { CreateDeputyInput } from './input/create-deputy.input'
+import { FileFieldsInterceptor } from '@nestjs/platform-express'
+import { UpdateDeputyInput } from './input/update-deputy.input'
 import {
   ApiBearerAuth,
   ApiBody,
@@ -25,8 +25,8 @@ import {
   ApiParam,
   ApiResponse,
   ApiTags,
-} from '@nestjs/swagger';
-import { Deputy } from '../domain/deputy.entity';
+} from '@nestjs/swagger'
+import { Deputy } from '../domain/deputy.entity'
 
 @ApiTags('Deputy')
 @Controller('deputy')
@@ -44,7 +44,7 @@ export class DeputyController {
     type: [Deputy],
   })
   async deputies() {
-    return this.deputyQueryRepo.find();
+    return this.deputyQueryRepo.find()
   }
 
   @Get(':id')
@@ -59,11 +59,11 @@ export class DeputyController {
     description: 'Deputy not found',
   })
   async getDeputyById(@Param('id') id: number) {
-    const deputy = await this.deputyQueryRepo.findOne(id);
+    const deputy = await this.deputyQueryRepo.findOne(id)
     if (!deputy) {
-      throw new NotFoundException(`Deputy with this ID: ${id} was not found`);
+      throw new NotFoundException(`Deputy with this ID: ${id} was not found`)
     }
-    return deputy;
+    return deputy
   }
 
   @Post()
@@ -94,13 +94,13 @@ export class DeputyController {
     @Body() input: CreateDeputyInput,
     @UploadedFiles()
     files: {
-      photo?: Express.Multer.File;
-      background?: Express.Multer.File;
+      photo?: Express.Multer.File
+      background?: Express.Multer.File
     },
   ) {
-    input.photo = files.photo;
-    input.background = files.background;
-    return this.deputyService.createDeputy(input);
+    input.photo = files.photo
+    input.background = files.background
+    return this.deputyService.createDeputy(input)
   }
 
   @Put(':id')
@@ -136,17 +136,17 @@ export class DeputyController {
     @Body() input: UpdateDeputyInput,
     @UploadedFiles()
     files: {
-      photo?: Express.Multer.File;
-      backgroundImage?: Express.Multer.File;
+      photo?: Express.Multer.File
+      backgroundImage?: Express.Multer.File
     },
   ) {
-    input.photo = files.photo;
-    input.background = files.backgroundImage;
-    const deputy = await this.deputyService.updateDeputy(input, id);
+    input.photo = files.photo
+    input.background = files.backgroundImage
+    const deputy = await this.deputyService.updateDeputy(input, id)
     if (!deputy) {
-      throw new NotFoundException(`Deputy with this ID: ${id} was not found`);
+      throw new NotFoundException(`Deputy with this ID: ${id} was not found`)
     }
-    return deputy;
+    return deputy
   }
 
   @Delete(':id')
@@ -160,10 +160,10 @@ export class DeputyController {
   @ApiResponse({ status: 404, description: 'Deputy not found' })
   @ApiBearerAuth()
   async deleteDeputy(@Param('id') id: number) {
-    const deputy = await this.deputyService.deleteDeputy(id);
+    const deputy = await this.deputyService.deleteDeputy(id)
     if (!deputy) {
-      throw new NotFoundException(`Deputy with this ID: ${id} was not found`);
+      throw new NotFoundException(`Deputy with this ID: ${id} was not found`)
     }
-    return deputy;
+    return deputy
   }
 }

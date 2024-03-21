@@ -1,5 +1,5 @@
-import { IsNotEmpty, IsString, IsUrl } from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
+import { IsNotEmpty, IsString, IsUrl } from 'class-validator'
+import { ApiProperty } from '@nestjs/swagger'
 
 export class TagCreateInput {
   @ApiProperty({
@@ -7,10 +7,10 @@ export class TagCreateInput {
   })
   @IsString()
   @IsNotEmpty()
-  name: string;
+  name: string
 
   @ApiProperty({ description: 'Link to resource' })
   @IsUrl()
   @IsNotEmpty()
-  link: string;
+  link: string
 }

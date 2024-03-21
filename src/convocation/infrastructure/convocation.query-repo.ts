@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
-import { EntityManager, In } from 'typeorm';
-import { Convocation } from '../domain/convocation.entity';
+import { Injectable } from '@nestjs/common'
+import { EntityManager, In } from 'typeorm'
+import { Convocation } from '../domain/convocation.entity'
 
 @Injectable()
 export class ConvocationQueryRepo {
@@ -10,14 +10,14 @@ export class ConvocationQueryRepo {
     return this.em.findOne(Convocation, {
       where: { id: id },
       relations: ['parties.deputies'],
-    });
+    })
   }
 
   async findMany() {
-    return this.em.find(Convocation);
+    return this.em.find(Convocation)
   }
 
   async find(ids: number[]) {
-    return this.em.find(Convocation, { where: { id: In(ids) } });
+    return this.em.find(Convocation, { where: { id: In(ids) } })
   }
 }

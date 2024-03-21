@@ -1,22 +1,16 @@
-import {
-  IsArray,
-  IsNotEmpty,
-  IsNumber,
-  IsOptional,
-  IsString,
-} from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
+import { IsArray, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator'
+import { ApiProperty } from '@nestjs/swagger'
 
 export class CreateNewsInput {
   @ApiProperty({ type: 'string' })
   @IsNotEmpty()
   @IsString()
-  title: string;
+  title: string
 
   @ApiProperty({ type: 'string' })
   @IsNotEmpty()
   @IsString()
-  text: string;
+  text: string
 
   @ApiProperty({
     type: 'string',
@@ -24,7 +18,7 @@ export class CreateNewsInput {
   })
   @IsString()
   @IsOptional()
-  sources: string;
+  sources: string
 
   @ApiProperty({
     type: 'number',
@@ -32,7 +26,7 @@ export class CreateNewsInput {
   })
   @IsNumber()
   @IsOptional()
-  categoryId: number;
+  categoryId: number
 
   @ApiProperty({
     type: 'number',
@@ -43,9 +37,9 @@ export class CreateNewsInput {
   @IsArray()
   @IsNumber({}, { each: true })
   @IsOptional()
-  tags: number[];
+  tags: number[]
 
   @ApiProperty({ type: 'file', format: 'binary', description: 'Image file' })
   @IsOptional()
-  image: Express.Multer.File;
+  image: Express.Multer.File
 }

@@ -1,6 +1,6 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { Party } from '../../party/domain/party.entity';
+import { ApiProperty } from '@nestjs/swagger'
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
+import { Party } from '../../party/domain/party.entity'
 
 export enum Gender {
   male = 'male',
@@ -11,23 +11,23 @@ export enum Gender {
 export class Deputy {
   @ApiProperty({ description: 'ID of the deputy' })
   @PrimaryGeneratedColumn()
-  id: number;
+  id: number
 
   @ApiProperty({ description: 'Name of the deputy' })
   @Column()
-  name: string;
+  name: string
 
   @ApiProperty({ description: 'Surname of the deputy' })
   @Column()
-  surname: string;
+  surname: string
 
   @ApiProperty({ description: 'Photo URL of the deputy' })
   @Column()
-  photo: string;
+  photo: string
 
   @ApiProperty({ description: 'Background image URL of the deputy' })
   @Column()
-  background: string;
+  background: string
 
   @ApiProperty({
     description: 'Birthday of the deputy',
@@ -35,15 +35,15 @@ export class Deputy {
     format: 'date-time',
   })
   @Column({ type: 'timestamp' })
-  birthday: Date;
+  birthday: Date
 
   @ApiProperty({ description: 'Description of the deputy' })
   @Column()
-  description: string;
+  description: string
 
   @ApiProperty({ description: 'Gender of the deputy', enum: Gender })
   @Column({ type: 'enum', enum: Gender })
-  gender: Gender;
+  gender: Gender
 
   @ApiProperty({
     description: 'Party associated with the deputy',
@@ -51,5 +51,5 @@ export class Deputy {
     required: false,
   })
   @ManyToOne(() => Party, (party) => party.deputies, { nullable: true })
-  party: Party | null;
+  party: Party | null
 }

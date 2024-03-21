@@ -1,29 +1,12 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  NotFoundException,
-  Param,
-  Post,
-  Put,
-  UseGuards,
-} from '@nestjs/common';
-import { CategoryService } from '../category.service';
-import { Category } from '../domain/category.entity';
-import { CategoryCreateInput } from './input/category-create.input';
-import { CategoryUpdateInput } from './input/category-update.input';
-import {
-  ApiBearerAuth,
-  ApiBody,
-  ApiOperation,
-  ApiParam,
-  ApiResponse,
-  ApiTags,
-} from '@nestjs/swagger';
-import { CategoryQueryRepo } from '../infrastructure/category.query-repo';
-import { AdminGuard } from '../../common/guard/auth.guard';
-import { Actor } from '../../common/decorators/actor.decrator';
+import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put, UseGuards } from '@nestjs/common'
+import { CategoryService } from '../category.service'
+import { Category } from '../domain/category.entity'
+import { CategoryCreateInput } from './input/category-create.input'
+import { CategoryUpdateInput } from './input/category-update.input'
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { CategoryQueryRepo } from '../infrastructure/category.query-repo'
+import { AdminGuard } from '../../common/guard/auth.guard'
+import { Actor } from '../../common/decorators/actor.decrator'
 
 @ApiTags('Category')
 @Controller('categories')
@@ -37,7 +20,7 @@ export class CategoryController {
   @ApiOperation({ summary: 'Get all categories' })
   @ApiResponse({ status: 200, type: [Category], isArray: true })
   async getCategories(): Promise<Category[]> {
-    return this.categoryQueryRepo.getCategories();
+    return this.categoryQueryRepo.getCategories()
   }
 
   @Get(':id')
@@ -45,11 +28,11 @@ export class CategoryController {
   @ApiResponse({ status: 200, type: Category })
   @ApiResponse({ status: 404, description: 'Category not found' })
   async getCategoryById(@Param('id') id: number): Promise<Category> {
-    const category = await this.categoryQueryRepo.findOne(id);
+    const category = await this.categoryQueryRepo.findOne(id)
     if (!category) {
-      throw new NotFoundException(`Category with this ID: ${id} was not found`);
+      throw new NotFoundException(`Category with this ID: ${id} was not found`)
     }
-    return category;
+    return category
   }
 
   @Post()
@@ -59,11 +42,8 @@ export class CategoryController {
   @ApiBody({ type: CategoryCreateInput })
   @ApiResponse({ status: 201, type: Category })
   @ApiResponse({ status: 400, description: 'Bad request' })
-  async createCategory(
-    @Body() input: CategoryCreateInput,
-    @Actor() actor,
-  ): Promise<Category> {
-    return this.categoryService.createCategory(input, actor.sub);
+  async createCategory(@Body() input: CategoryCreateInput, @Actor() actor): Promise<Category> {
+    return this.categoryService.createCategory(input, actor.sub)
   }
 
   @Put(':id')
@@ -79,15 +59,12 @@ export class CategoryController {
   @ApiResponse({ status: 200, type: Category })
   @ApiResponse({ status: 400, description: 'Bad request' })
   @ApiResponse({ status: 404, description: 'Category not found' })
-  async updateCategory(
-    @Param('id') id: number,
-    @Body() input: CategoryUpdateInput,
-  ): Promise<Category> {
-    const category = await this.categoryService.updateCategory(id, input);
+  async updateCategory(@Param('id') id: number, @Body() input: CategoryUpdateInput): Promise<Category> {
+    const category = await this.categoryService.updateCategory(id, input)
     if (!category) {
-      throw new NotFoundException(`Category with this ID: ${id} was not found`);
+      throw new NotFoundException(`Category with this ID: ${id} was not found`)
     }
-    return null;
+    return null
   }
 
   @Delete(':id')
@@ -102,10 +79,10 @@ export class CategoryController {
   @ApiResponse({ status: 204 })
   @ApiResponse({ status: 404, description: 'Category not found' })
   async deleteCategory(@Param('id') id: number) {
-    const isDeleted = await this.categoryService.deleteCategory(id);
+    const isDeleted = await this.categoryService.deleteCategory(id)
     if (!isDeleted) {
-      throw new NotFoundException(`Category with this ID: ${id} was not found`);
+      throw new NotFoundException(`Category with this ID: ${id} was not found`)
     }
-    return isDeleted;
+    return isDeleted
   }
 }

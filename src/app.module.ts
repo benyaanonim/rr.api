@@ -1,23 +1,23 @@
-import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { NewsModule } from './news/news.module';
-import { AwsModule } from './aws/aws.module';
-import { CategoryModule } from './category/category.module';
-import { TagModule } from './tag/tag.module';
-import { ServeStaticModule } from '@nestjs/serve-static';
-import { join } from 'path';
-import { AdminModule } from './admin/admin.module';
-import { AuthModule } from './auth/auth.module';
-import { FormModule } from './ feedback-form/form.module';
-import { APP_GUARD } from '@nestjs/core';
-import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
-import { DeputyModule } from './deputy/deputy.module';
-import { PartyModule } from './party/party.module';
-import { MulterModule } from '@nestjs/platform-express';
-import { ConvocationModule } from './convocation/convocation.module';
+import { Module } from '@nestjs/common'
+import { AppController } from './app.controller'
+import { AppService } from './app.service'
+import { TypeOrmModule } from '@nestjs/typeorm'
+import { ConfigModule, ConfigService } from '@nestjs/config'
+import { NewsModule } from './news/news.module'
+import { AwsModule } from './aws/aws.module'
+import { CategoryModule } from './category/category.module'
+import { TagModule } from './tag/tag.module'
+import { ServeStaticModule } from '@nestjs/serve-static'
+import { join } from 'path'
+import { AdminModule } from './admin/admin.module'
+import { AuthModule } from './auth/auth.module'
+import { FormModule } from './ feedback-form/form.module'
+import { APP_GUARD } from '@nestjs/core'
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler'
+import { DeputyModule } from './deputy/deputy.module'
+import { PartyModule } from './party/party.module'
+import { MulterModule } from '@nestjs/platform-express'
+import { ConvocationModule } from './convocation/convocation.module'
 
 @Module({
   imports: [
@@ -44,10 +44,10 @@ import { ConvocationModule } from './convocation/convocation.module';
         type: 'postgres',
         url: configService.get<string>('PG_URI'),
         // host: configService.get<string>('PG_HOST') || 'localhost',
-        // port: configService.get<number>('PG_PORT', 5432),
-        // username: configService.get<string>('USER_NAME_DB'),
-        // password: configService.get<string>('PASSWORD_DB'),
-        // database: configService.get<string>('DB_NAME'),
+        // port: configService.get<number>('PG_PORT', 5433),
+        // username: configService.get<string>('POSTGRES_USER'),
+        // password: configService.get<string>('POSTGRES_PASSWORD'),
+        // database: configService.get<string>('POSTGRES_DB'),
         autoLoadEntities: true,
         synchronize: true,
         extra: {

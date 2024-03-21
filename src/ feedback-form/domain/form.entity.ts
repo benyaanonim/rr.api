@@ -1,5 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { ApiProperty } from '@nestjs/swagger';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import { ApiProperty } from '@nestjs/swagger'
 
 @Entity()
 export class Form {
@@ -7,51 +7,49 @@ export class Form {
   @ApiProperty({
     description: 'Unique identifier of the form',
   })
-  id: number;
+  id: number
 
   @Column()
   @ApiProperty({
     description: 'Name of the person who submitted the form',
   })
-  name: string;
+  name: string
 
   @Column()
   @ApiProperty({
     description: 'Surname of the person who submitted the form',
   })
-  surname: string;
+  surname: string
 
   @Column()
   @ApiProperty({
     description: 'Email address of the person who submitted the form',
   })
-  email: string;
+  email: string
 
   @Column()
   @ApiProperty({
     description: 'Text content of the form',
   })
-  text: string;
+  text: string
 
   @Column({ type: 'timestamp', name: 'created_at' })
   @ApiProperty({ description: 'Created at Date form' })
-  createdAt: Date;
+  createdAt: Date
 
   @Column({ default: false })
   @ApiProperty({ description: 'Feedback form processing status' })
-  status: boolean;
+  status: boolean
 
   @Column({ nullable: true, name: 'update_by' })
   @ApiProperty({
-    description:
-      'Name of the admin who updated the status of the feedback form',
+    description: 'Name of the admin who updated the status of the feedback form',
   })
-  updatedBy: string;
+  updatedBy: string
 
   @Column({ nullable: true, type: 'timestamp', name: 'updated_at' })
   @ApiProperty({
-    description:
-      'Date and time when the status of the feedback form was updated',
+    description: 'Date and time when the status of the feedback form was updated',
   })
-  updatedAt: Date;
+  updatedAt: Date
 }

@@ -1,28 +1,13 @@
-import {
-  Body,
-  Controller,
-  Get,
-  NotFoundException,
-  Param,
-  Post,
-  Put,
-  UseGuards,
-} from '@nestjs/common';
-import { FormService } from '../form.service';
-import { FormQueryRepo } from '../infrastructure/form.query-repo';
-import { CreateFormInput } from './input/create-form.input';
-import { Throttle } from '@nestjs/throttler';
-import { AdminGuard } from '../../common/guard/auth.guard';
-import {
-  ApiBearerAuth,
-  ApiBody,
-  ApiOperation,
-  ApiResponse,
-  ApiTags,
-} from '@nestjs/swagger';
-import { Form } from '../domain/form.entity';
-import { UpdateStatusFormInput } from './input/update-status-form.input';
-import { Actor } from '../../common/decorators/actor.decrator';
+import { Body, Controller, Get, NotFoundException, Param, Post, Put, UseGuards } from '@nestjs/common'
+import { FormService } from '../form.service'
+import { FormQueryRepo } from '../infrastructure/form.query-repo'
+import { CreateFormInput } from './input/create-form.input'
+import { Throttle } from '@nestjs/throttler'
+import { AdminGuard } from '../../common/guard/auth.guard'
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { Form } from '../domain/form.entity'
+import { UpdateStatusFormInput } from './input/update-status-form.input'
+import { Actor } from '../../common/decorators/actor.decrator'
 
 @ApiTags('Feedback-form')
 @Controller('feedback-form')
@@ -42,7 +27,7 @@ export class FormController {
   })
   @ApiBearerAuth()
   async forms() {
-    return this.formQueryRepo.find();
+    return this.formQueryRepo.find()
   }
 
   @Get(':id')
@@ -59,13 +44,11 @@ export class FormController {
   })
   @ApiBearerAuth()
   async getFormById(@Param('id') id: number) {
-    const form = await this.formQueryRepo.findOne(id);
+    const form = await this.formQueryRepo.findOne(id)
     if (!form) {
-      throw new NotFoundException(
-        `Feedback form for this ID: ${id} not found `,
-      );
+      throw new NotFoundException(`Feedback form for this ID: ${id} not found `)
     }
-    return form;
+    return form
   }
 
   @Post()
@@ -74,8 +57,7 @@ export class FormController {
   @ApiResponse({ status: 201, description: 'Feedback form created' })
   @ApiResponse({
     status: 429,
-    description:
-      'Limiting the number of creations of review forms, one per day',
+    description: 'Limiting the number of creations of review forms, one per day',
   })
   @ApiOperation({
     summary: 'Create a new feedback form',
@@ -83,7 +65,7 @@ export class FormController {
   })
   @ApiBody({ type: CreateFormInput })
   async createForm(@Body() body: CreateFormInput) {
-    return this.formService.createForm(body);
+    return this.formService.createForm(body)
   }
 
   @Put(':formId')
@@ -104,16 +86,10 @@ export class FormController {
     @Body() body: UpdateStatusFormInput,
     @Actor() actor,
   ) {
-    const form = await this.formService.updateFormStatus(
-      body,
-      formId,
-      actor.sub,
-    );
+    const form = await this.formService.updateFormStatus(body, formId, actor.sub)
     if (!form) {
-      throw new NotFoundException(
-        `Feedback form for this ID: ${formId} not found `,
-      );
+      throw new NotFoundException(`Feedback form for this ID: ${formId} not found `)
     }
-    return form;
+    return form
   }
 }

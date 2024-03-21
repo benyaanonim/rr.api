@@ -1,22 +1,16 @@
-import {
-  IsArray,
-  IsNotEmpty,
-  IsNumber,
-  IsOptional,
-  IsString,
-} from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
+import { IsArray, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator'
+import { ApiProperty } from '@nestjs/swagger'
 
 export class PartyCreateInput {
   @ApiProperty({ type: 'string' })
   @IsString()
   @IsNotEmpty()
-  name: string;
+  name: string
 
   @ApiProperty({ type: 'string' })
   @IsString()
   @IsNotEmpty()
-  description: string;
+  description: string
 
   @ApiProperty({
     type: 'array',
@@ -26,13 +20,13 @@ export class PartyCreateInput {
   @IsNotEmpty()
   @IsArray()
   @IsNumber({}, { each: true })
-  convocationIds: number[];
+  convocationIds: number[]
 
   @ApiProperty({ type: 'file', format: 'binary', description: 'Image file' })
   @IsOptional()
-  logo: Express.Multer.File;
+  logo: Express.Multer.File
 
   @ApiProperty({ type: 'file', format: 'binary', description: 'Image file' })
   @IsOptional()
-  background: Express.Multer.File;
+  background: Express.Multer.File
 }

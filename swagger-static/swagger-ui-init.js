@@ -1258,12 +1258,7 @@ window.onload = function() {
       "version": "1.0",
       "contact": {}
     },
-    "tags": [
-      {
-        "name": "news",
-        "description": ""
-      }
-    ],
+    "tags": [],
     "servers": [],
     "components": {
       "securitySchemes": {

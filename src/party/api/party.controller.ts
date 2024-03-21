@@ -10,13 +10,13 @@ import {
   UploadedFile,
   UseGuards,
   UseInterceptors,
-} from '@nestjs/common';
-import { PartyService } from '../party.service';
-import { PartyQueryRepo } from '../infrastructure/party.query-repo';
-import { AdminGuard } from '../../common/guard/auth.guard';
-import { PartyCreateInput } from './input/party-create.input';
-import { FileFieldsInterceptor } from '@nestjs/platform-express';
-import { PartyUpdateInput } from './input/party-update.input';
+} from '@nestjs/common'
+import { PartyService } from '../party.service'
+import { PartyQueryRepo } from '../infrastructure/party.query-repo'
+import { AdminGuard } from '../../common/guard/auth.guard'
+import { PartyCreateInput } from './input/party-create.input'
+import { FileFieldsInterceptor } from '@nestjs/platform-express'
+import { PartyUpdateInput } from './input/party-update.input'
 import {
   ApiBearerAuth,
   ApiBody,
@@ -25,8 +25,8 @@ import {
   ApiParam,
   ApiResponse,
   ApiTags,
-} from '@nestjs/swagger';
-import { Party } from '../domain/party.entity';
+} from '@nestjs/swagger'
+import { Party } from '../domain/party.entity'
 
 @ApiTags('Party')
 @Controller('party')
@@ -40,7 +40,7 @@ export class PartyController {
   @ApiOperation({ summary: 'Get all parties' })
   @ApiResponse({ status: 200, description: 'List of parties', type: [Party] })
   async parties() {
-    return this.partyQueryRepo.find();
+    return this.partyQueryRepo.find()
   }
 
   @Get(':id')
@@ -48,11 +48,11 @@ export class PartyController {
   @ApiResponse({ status: 200, type: Party })
   @ApiResponse({ status: 404, description: 'Party not found' })
   async getPartyById(@Param('id') id: number) {
-    const party = await this.partyQueryRepo.findOne(id);
+    const party = await this.partyQueryRepo.findOne(id)
     if (!party) {
-      throw new NotFoundException(`Party with ID: ${id} not found`);
+      throw new NotFoundException(`Party with ID: ${id} not found`)
     }
-    return party;
+    return party
   }
 
   @Post()
@@ -73,13 +73,13 @@ export class PartyController {
     @Body() input: PartyCreateInput,
     @UploadedFile()
     files: {
-      logo?: Express.Multer.File;
-      background?: Express.Multer.File;
+      logo?: Express.Multer.File
+      background?: Express.Multer.File
     },
   ) {
-    input.logo = files.logo;
-    input.background = files.background;
-    return this.partyService.createParty(input);
+    input.logo = files.logo
+    input.background = files.background
+    return this.partyService.createParty(input)
   }
 
   @Put(':id')
@@ -103,13 +103,13 @@ export class PartyController {
     @Body() input: PartyUpdateInput,
     @UploadedFile()
     files: {
-      logo?: Express.Multer.File;
-      background?: Express.Multer.File;
+      logo?: Express.Multer.File
+      background?: Express.Multer.File
     },
   ) {
-    input.logo = files.logo;
-    input.background = files.background;
-    return this.partyService.updateParty(id, input);
+    input.logo = files.logo
+    input.background = files.background
+    return this.partyService.updateParty(id, input)
   }
 
   @Delete(':id')
@@ -120,6 +120,6 @@ export class PartyController {
   @ApiResponse({ status: 404, description: 'Party not found' })
   @ApiBearerAuth()
   async deleteParty(@Param('id') id: number) {
-    return this.partyService.deleteParty(id);
+    return this.partyService.deleteParty(id)
   }
 }

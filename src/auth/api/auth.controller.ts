@@ -1,17 +1,11 @@
-import { Body, Controller, Post, UnauthorizedException } from '@nestjs/common';
-import { AuthService } from '../auth.service';
-import { AdminInput } from './input/admin.credentials.input';
-import {
-  ApiBody,
-  ApiOperation,
-  ApiProperty,
-  ApiResponse,
-  ApiTags,
-} from '@nestjs/swagger';
+import { Body, Controller, Post, UnauthorizedException } from '@nestjs/common'
+import { AuthService } from '../auth.service'
+import { AdminInput } from './input/admin.credentials.input'
+import { ApiBody, ApiOperation, ApiProperty, ApiResponse, ApiTags } from '@nestjs/swagger'
 
 class ResponseLogin {
   @ApiProperty({ description: 'JWT token' })
-  accessToken: string;
+  accessToken: string
 }
 
 @ApiTags('Auth')
@@ -29,10 +23,10 @@ export class AuthController {
   @ApiBody({ type: AdminInput })
   @Post('login')
   async login(@Body() body: AdminInput) {
-    const resultAuth = await this.authService.login(body);
+    const resultAuth = await this.authService.login(body)
     if (!resultAuth) {
-      throw new UnauthorizedException('Credentials is not valid');
+      throw new UnauthorizedException('Credentials is not valid')
     }
-    return resultAuth;
+    return resultAuth
   }
 }

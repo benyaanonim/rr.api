@@ -1,23 +1,17 @@
-import { ApiProperty } from '@nestjs/swagger';
-import {
-  IsDateString,
-  IsEnum,
-  IsNumber,
-  IsOptional,
-  IsString,
-} from 'class-validator';
-import { Gender } from '../../domain/deputy.entity';
+import { ApiProperty } from '@nestjs/swagger'
+import { IsDateString, IsEnum, IsNumber, IsOptional, IsString } from 'class-validator'
+import { Gender } from '../../domain/deputy.entity'
 
 export class UpdateDeputyInput {
   @ApiProperty({ description: 'Name of the deputy', required: false })
   @IsString()
   @IsOptional()
-  name: string | null;
+  name: string | null
 
   @ApiProperty({ description: 'Surname of the deputy', required: false })
   @IsString()
   @IsOptional()
-  surname: string | null;
+  surname: string | null
 
   @ApiProperty({
     description: 'Birthday of the deputy',
@@ -27,12 +21,12 @@ export class UpdateDeputyInput {
   })
   @IsDateString()
   @IsOptional()
-  birthday: Date | null;
+  birthday: Date | null
 
   @ApiProperty({ description: 'Description of the deputy', required: false })
   @IsString()
   @IsOptional()
-  description: string | null;
+  description: string | null
 
   @ApiProperty({
     description: 'Gender of the deputy',
@@ -41,7 +35,7 @@ export class UpdateDeputyInput {
   })
   @IsEnum(Gender)
   @IsOptional()
-  gender: Gender | null;
+  gender: Gender | null
 
   @ApiProperty({
     description: 'Photo of the deputy',
@@ -49,7 +43,7 @@ export class UpdateDeputyInput {
     required: false,
   })
   @IsOptional()
-  photo: Express.Multer.File | null;
+  photo: Express.Multer.File | null
 
   @ApiProperty({
     description: 'Background image of the deputy',
@@ -57,10 +51,10 @@ export class UpdateDeputyInput {
     required: false,
   })
   @IsOptional()
-  background: Express.Multer.File | null;
+  background: Express.Multer.File | null
 
   @ApiProperty({ description: 'Party ID of the deputy', required: false })
   @IsNumber()
   @IsOptional()
-  partyId: number | null;
+  partyId: number | null
 }

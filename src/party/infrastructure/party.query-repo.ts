@@ -1,6 +1,6 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { EntityManager } from 'typeorm';
-import { Party } from '../domain/party.entity';
+import { Injectable, NotFoundException } from '@nestjs/common'
+import { EntityManager } from 'typeorm'
+import { Party } from '../domain/party.entity'
 
 @Injectable()
 export class PartyQueryRepo {
@@ -10,10 +10,10 @@ export class PartyQueryRepo {
     return this.em.findOne(Party, {
       where: { id: id },
       relations: ['deputies'],
-    });
+    })
   }
 
   async find() {
-    return this.em.find(Party, { relations: ['deputies'] });
+    return this.em.find(Party, { relations: ['deputies'] })
   }
 }
