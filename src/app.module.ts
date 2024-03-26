@@ -1,22 +1,23 @@
-import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { NewsModule } from './news/news.module';
-import { AwsModule } from './aws/aws.module';
-import { CategoryModule } from './category/category.module';
-import { TagModule } from './tag/tag.module';
+import { Module } from '@nestjs/common'
+import { AppController } from './app.controller'
+import { AppService } from './app.service'
+import { TypeOrmModule } from '@nestjs/typeorm'
+import { ConfigModule, ConfigService } from '@nestjs/config'
+import { NewsModule } from './news/news.module'
+import { AwsModule } from './aws/aws.module'
+import { CategoryModule } from './category/category.module'
+import { TagModule } from './tag/tag.module'
 import { ServeStaticModule } from '@nestjs/serve-static'
-import { join } from 'path';
-import { AdminModule } from './admin/admin.module';
-import { AuthModule } from './auth/auth.module';
-import { FormModule } from './ feedback-form/form.module';
-import { APP_GUARD } from '@nestjs/core';
-import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
-import { DeputyModule } from './deputy/deputy.module';
-import { PartyModule } from './party/party.module';
-import { ConvocationModule } from './convocation/convocation.module';
+import { join } from 'path'
+import { AdminModule } from './admin/admin.module'
+import { AuthModule } from './auth/auth.module'
+import { FormModule } from './ feedback-form/form.module'
+import { APP_GUARD } from '@nestjs/core'
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler'
+import { DeputyModule } from './deputy/deputy.module'
+import { PartyModule } from './party/party.module'
+import { MulterModule } from '@nestjs/platform-express'
+import { ConvocationModule } from './convocation/convocation.module'
 
 @Module({
   imports: [
