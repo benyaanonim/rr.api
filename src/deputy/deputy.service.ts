@@ -1,10 +1,11 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common'
 import { DeputyRepo } from './infrastructure/deputy.repo'
 import { CreateDeputyInput } from './api/input/create-deputy.input'
-import { Deputy, Property } from './domain/deputy.entity'
+import { Deputy } from './domain/deputy.entity'
 import { AwsService } from '../aws/aws.service'
 import { PartyQueryRepo } from '../party/infrastructure/party.query-repo'
 import { UpdateDeputyInput } from './api/input/update-deputy.input'
+import { Property } from './domain/deputy-property.entity'
 
 @Injectable()
 export class DeputyService {

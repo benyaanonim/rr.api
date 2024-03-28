@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from 'typeorm'
 import { Party } from '../../party/domain/party.entity'
+import { Property } from './deputy-property.entity'
 
 export enum Gender {
   male = 'male',
@@ -56,28 +57,4 @@ export class Deputy {
   @OneToOne(() => Property, { nullable: true, cascade: true })
   @JoinColumn()
   property: Property | null
-}
-
-@Entity()
-export class Property {
-  @PrimaryGeneratedColumn()
-  id: number
-
-  @Column({ nullable: true })
-  savings: string[] | null
-
-  @Column({ nullable: true })
-  other: string[] | null
-
-  @Column({ name: 'real_estate', nullable: true })
-  realEstate: string[] | null
-
-  @Column({ nullable: true })
-  cars: string[] | null
-
-  @Column({ nullable: true })
-  business: string[] | null
-
-  @OneToOne(() => Deputy, (deputy) => deputy.property)
-  deputy: Deputy | null
 }

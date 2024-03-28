@@ -1834,6 +1834,41 @@ window.onload = function() {
             "partyId": {
               "type": "number",
               "description": "Party ID of the deputy"
+            },
+            "savings": {
+              "description": "Savings of the deputy",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "other": {
+              "description": "Other properties of the deputy",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "realEstate": {
+              "description": "Real estate of the deputy",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "cars": {
+              "description": "Cars of the deputy",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "business": {
+              "description": "Business of the deputy",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           },
           "required": [
@@ -1885,6 +1920,41 @@ window.onload = function() {
             "partyId": {
               "type": "number",
               "description": "Party ID of the deputy"
+            },
+            "savings": {
+              "description": "Savings of the deputy",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "other": {
+              "description": "Other properties of the deputy",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "realEstate": {
+              "description": "Real estate of the deputy",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "cars": {
+              "description": "Cars of the deputy",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "business": {
+              "description": "Business of the deputy",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           }
         },
