@@ -4,6 +4,7 @@
 /build
 .idea
 .docker
+.vscode
 
 # Logs
 logs

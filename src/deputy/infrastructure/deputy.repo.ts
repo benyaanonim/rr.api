@@ -7,7 +7,7 @@ export class DeputyRepo {
   constructor(protected readonly em: EntityManager) {}
 
   async findOne(id: number) {
-    return this.em.findOne(Deputy, { where: { id: id } })
+    return this.em.findOne(Deputy, { where: { id: id }, relations: ['property', 'party'] })
   }
   async save(deputy: Deputy) {
     return this.em.save(deputy)

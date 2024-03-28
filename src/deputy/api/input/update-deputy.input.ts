@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { IsDateString, IsEnum, IsNumber, IsOptional, IsString } from 'class-validator'
+import { IsArray, IsDateString, IsEnum, IsNumber, IsOptional, IsString } from 'class-validator'
 import { Gender } from '../../domain/deputy.entity'
 
 export class UpdateDeputyInput {
@@ -57,4 +57,34 @@ export class UpdateDeputyInput {
   @IsNumber()
   @IsOptional()
   partyId: number | null
+
+  @ApiProperty({ description: 'Savings of the deputy', required: false, type: [String] })
+  @IsArray()
+  @IsString({ each: true })
+  @IsOptional()
+  savings: string[] | null
+
+  @ApiProperty({ description: 'Other properties of the deputy', required: false, type: [String] })
+  @IsArray()
+  @IsString({ each: true })
+  @IsOptional()
+  other: string[] | null
+
+  @ApiProperty({ description: 'Real estate of the deputy', required: false, type: [String] })
+  @IsArray()
+  @IsString({ each: true })
+  @IsOptional()
+  realEstate: string[] | null
+
+  @ApiProperty({ description: 'Cars of the deputy', required: false, type: [String] })
+  @IsArray()
+  @IsString({ each: true })
+  @IsOptional()
+  cars: string[] | null
+
+  @ApiProperty({ description: 'Business of the deputy', required: false, type: [String] })
+  @IsArray()
+  @IsString({ each: true })
+  @IsOptional()
+  business: string[] | null
 }
