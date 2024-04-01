@@ -27,6 +27,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger'
 import { Deputy } from '../domain/deputy.entity'
+import { CreateOtherInfoInput } from './input/create.other-info.input'
 
 @ApiTags('Deputy')
 @Controller('deputy')
@@ -165,5 +166,33 @@ export class DeputyController {
       throw new NotFoundException(`Deputy with this ID: ${id} was not found`)
     }
     return deputy
+  }
+
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Create OtherInfo for a Deputy' })
+  @ApiResponse({ status: 201, description: 'OtherInfo created' })
+  @ApiResponse({ status: 404, description: 'Deputy not found' })
+  @Post(':id/other-info')
+  @UseGuards(AdminGuard)
+  async createOtherInfo(@Param('id') id: number, @Body() input: CreateOtherInfoInput) {
+    const otherInfo = await this.deputyService.createOtherInfo(id, input)
+    if (!otherInfo) {
+      throw new NotFoundException('Deputy is not found')
+    }
+    return otherInfo
+  }
+
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Delete OtherInfo of a Deputy' })
+  @ApiResponse({ status: 204, description: 'OtherInfo deleted' })
+  @ApiResponse({ status: 404, description: 'OtherInfo or Deputy not found' })
+  @Delete(':deputyId/other-info/:id')
+  @UseGuards(AdminGuard)
+  async deleteOtherInfo(@Param('deputyId') deputyId: number, @Param('id') otherInfoId: number) {
+    const result = await this.deputyService.deleteOtherInfo(deputyId, otherInfoId)
+    if (!result) {
+      throw new NotFoundException('OtherInfo or Deputy not found')
+    }
+    return result
   }
 }

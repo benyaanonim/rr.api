@@ -9,11 +9,11 @@ export class DeputyQueryRepo {
   findOne(id: number) {
     return this.em.findOne(Deputy, {
       where: { id: id },
-      relations: ['party', 'convocations'],
+      relations: ['party', 'property', 'otherInfo'],
     })
   }
 
   async find() {
-    return this.em.find(Deputy)
+    return this.em.find(Deputy, { relations: ['party', 'property', 'otherInfo'] })
   }
 }

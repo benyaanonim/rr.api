@@ -923,6 +923,88 @@ window.onload = function() {
           ]
         }
       },
+      "/deputy/{id}/other-info": {
+        "post": {
+          "operationId": "DeputyController_createOtherInfo",
+          "summary": "Create OtherInfo for a Deputy",
+          "parameters": [
+            {
+              "name": "id",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "number"
+              }
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateOtherInfoInput"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "OtherInfo created"
+            },
+            "404": {
+              "description": "Deputy not found"
+            }
+          },
+          "tags": [
+            "Deputy"
+          ],
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/deputy/{deputyId}/other-info/{id}": {
+        "delete": {
+          "operationId": "DeputyController_deleteOtherInfo",
+          "summary": "Delete OtherInfo of a Deputy",
+          "parameters": [
+            {
+              "name": "deputyId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "number"
+              }
+            },
+            {
+              "name": "id",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "number"
+              }
+            }
+          ],
+          "responses": {
+            "204": {
+              "description": "OtherInfo deleted"
+            },
+            "404": {
+              "description": "OtherInfo or Deputy not found"
+            }
+          },
+          "tags": [
+            "Deputy"
+          ],
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
       "/party": {
         "get": {
           "operationId": "PartyController_parties",
@@ -1957,6 +2039,26 @@ window.onload = function() {
               }
             }
           }
+        },
+        "CreateOtherInfoInput": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "Name of the other info"
+            },
+            "description": {
+              "description": "Description of the other info",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "name",
+            "description"
+          ]
         },
         "PartyCreateInput": {
           "type": "object",

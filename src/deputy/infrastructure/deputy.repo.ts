@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { EntityManager } from 'typeorm'
 import { Deputy } from '../domain/deputy.entity'
+import { OtherInfo } from '../domain/other-info.entity'
 
 @Injectable()
 export class DeputyRepo {
@@ -9,11 +10,15 @@ export class DeputyRepo {
   async findOne(id: number) {
     return this.em.findOne(Deputy, { where: { id: id }, relations: ['property', 'party'] })
   }
-  async save(deputy: Deputy) {
-    return this.em.save(deputy)
+  async save(entity: Deputy | OtherInfo) {
+    return this.em.save(entity)
   }
 
   async delete(id: number) {
     return this.em.delete(Deputy, id)
+  }
+
+  async deleteOtherInfo(id: number) {
+    return this.em.delete(OtherInfo, id)
   }
 }

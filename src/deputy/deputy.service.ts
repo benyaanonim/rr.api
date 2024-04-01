@@ -6,6 +6,8 @@ import { AwsService } from '../aws/aws.service'
 import { PartyQueryRepo } from '../party/infrastructure/party.query-repo'
 import { UpdateDeputyInput } from './api/input/update-deputy.input'
 import { Property } from './domain/deputy-property.entity'
+import { CreateOtherInfoInput } from './api/input/create.other-info.input'
+import { OtherInfo } from './domain/other-info.entity'
 
 @Injectable()
 export class DeputyService {
@@ -95,5 +97,27 @@ export class DeputyService {
     }
 
     return deputy
+  }
+
+  async createOtherInfo(id: number, input: CreateOtherInfoInput) {
+    const deputy = await this.deputyRepo.findOne(id)
+    if (!deputy) {
+      return null
+    }
+
+    const otherInfo = new OtherInfo()
+    otherInfo.name = input.name
+    otherInfo.description = input.description
+    otherInfo.deputy = deputy
+
+    return this.deputyRepo.save(otherInfo)
+  }
+
+  async deleteOtherInfo(deputyId: number, id: number) {
+    const deputy = await this.deputyRepo.findOne(deputyId)
+    if (!deputy) {
+      return null
+    }
+    return this.deputyRepo.deleteOtherInfo(id)
   }
 }

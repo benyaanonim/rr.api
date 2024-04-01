@@ -1,7 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm'
 import { Party } from '../../party/domain/party.entity'
 import { Property } from './deputy-property.entity'
+import { OtherInfo } from './other-info.entity'
 
 export enum Gender {
   male = 'male',
@@ -57,4 +58,7 @@ export class Deputy {
   @OneToOne(() => Property, { nullable: true, cascade: true })
   @JoinColumn()
   property: Property | null
+
+  @OneToMany(() => OtherInfo, (otherInfo) => otherInfo.deputy)
+  otherInfo: OtherInfo[]
 }

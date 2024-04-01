@@ -9,9 +9,10 @@ import { AwsService } from '../aws/aws.service'
 import { PartyQueryRepo } from '../party/infrastructure/party.query-repo'
 import { ConvocationQueryRepo } from '../convocation/infrastructure/convocation.query-repo'
 import { Property } from './domain/deputy-property.entity'
+import { OtherInfo } from './domain/other-info.entity'
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Deputy, Property])],
+  imports: [TypeOrmModule.forFeature([Deputy, Property, OtherInfo])],
   providers: [DeputyService, DeputyRepo, DeputyQueryRepo, AwsService, PartyQueryRepo, ConvocationQueryRepo],
   controllers: [DeputyController],
 })
