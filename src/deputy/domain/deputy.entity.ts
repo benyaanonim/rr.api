@@ -16,6 +16,10 @@ export class Deputy {
   @PrimaryGeneratedColumn()
   id: number
 
+  @ApiProperty({ description: 'Method of election' })
+  @Column()
+  majoritarian: boolean
+
   @ApiProperty({ description: 'Name of the deputy' })
   @Column()
   name: string

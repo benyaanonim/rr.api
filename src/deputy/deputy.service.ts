@@ -50,6 +50,7 @@ export class DeputyService {
     deputy.background = background
     deputy.party = await this.pqr.findOne(input.partyId)
     deputy.property = property
+    deputy.majoritarian = input.majoritarian
     deputy.rating = rating
 
     return this.deputyRepo.save(deputy)
@@ -86,6 +87,7 @@ export class DeputyService {
     deputy.birthday = input.birthday ?? deputy.birthday
     deputy.description = input.description ?? deputy.description
     deputy.gender = input.gender ?? deputy.gender
+    deputy.majoritarian = input.majoritarian ?? deputy.majoritarian
     deputy.party = input.partyId ? await this.pqr.findOne(input.partyId) : deputy.party
 
     return this.deputyRepo.save(deputy)

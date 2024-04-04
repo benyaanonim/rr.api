@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { EntityManager } from 'typeorm'
 import { Deputy } from '../domain/deputy.entity'
+import { QueryFilterDeputy } from '../api/input/query-filter.deputy'
 
 @Injectable()
 export class DeputyQueryRepo {
@@ -13,7 +14,29 @@ export class DeputyQueryRepo {
     })
   }
 
-  async find() {
-    return this.em.find(Deputy, { relations: ['party', 'property', 'otherInfo'] })
+  async find(filter: QueryFilterDeputy) {
+    const queryBuilder = this.em
+      .createQueryBuilder(Deputy, 'deputy')
+      .leftJoinAndSelect('deputy.party', 'party')
+      .leftJoinAndSelect('deputy.property', 'property')
+      .leftJoinAndSelect('deputy.otherInfo', 'otherInfo')
+      .leftJoinAndSelect('deputy.rating', 'rating')
+
+    if (filter.gender) {
+      queryBuilder.andWhere('deputy.gender = :gender', { gender: filter.gender })
+    }
+
+    if (filter.partyName) {
+      queryBuilder.andWhere('party.name = :partyName', { partyName: filter.partyName })
+    }
+
+    if (filter.majoritarian !== undefined) {
+      queryBuilder.andWhere('deputy.majoritarian = :majoritarian', { majoritarian: filter.majoritarian })
+    }
+
+    const skip = (filter.page - 1) * filter.pageSize
+    queryBuilder.skip(skip).take(filter.pageSize)
+
+    return queryBuilder.getManyAndCount()
   }
 }

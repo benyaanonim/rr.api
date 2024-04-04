@@ -1,4 +1,13 @@
-import { IsArray, IsDateString, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator'
+import {
+  IsArray,
+  IsBoolean,
+  IsDateString,
+  IsEnum,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator'
 import { Gender } from '../../domain/deputy.entity'
 import { ApiProperty } from '@nestjs/swagger'
 
@@ -12,6 +21,11 @@ export class CreateDeputyInput {
   @IsString()
   @IsNotEmpty()
   surname: string
+
+  @ApiProperty({ description: 'Method of election' })
+  @IsBoolean()
+  @IsNotEmpty()
+  majoritarian: boolean
 
   @ApiProperty({
     description: 'Birthday of the deputy',

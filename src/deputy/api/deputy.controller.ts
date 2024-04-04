@@ -7,6 +7,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UploadedFiles,
   UseGuards,
   UseInterceptors,
@@ -29,6 +30,7 @@ import {
 import { Deputy } from '../domain/deputy.entity'
 import { CreateOtherInfoInput } from './input/create.other-info.input'
 import { UpdateRatingInput } from './input/update.rating'
+import { QueryFilterDeputy } from './input/query-filter.deputy'
 
 @ApiTags('Deputy')
 @Controller('deputy')
@@ -45,8 +47,8 @@ export class DeputyController {
     description: 'Return all deputies',
     type: [Deputy],
   })
-  async deputies() {
-    return this.deputyQueryRepo.find()
+  async deputies(@Query() filter: QueryFilterDeputy) {
+    return this.deputyQueryRepo.find(filter)
   }
 
   @Get(':id')
