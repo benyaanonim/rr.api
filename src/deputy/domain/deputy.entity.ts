@@ -3,6 +3,7 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGene
 import { Party } from '../../party/domain/party.entity'
 import { Property } from './deputy-property.entity'
 import { OtherInfo } from './other-info.entity'
+import { Rating } from './rating.entity'
 
 export enum Gender {
   male = 'male',
@@ -59,6 +60,10 @@ export class Deputy {
   @JoinColumn()
   property: Property | null
 
-  @OneToMany(() => OtherInfo, (otherInfo) => otherInfo.deputy)
-  otherInfo: OtherInfo[]
+  @OneToOne(() => Rating)
+  @JoinColumn()
+  rating: Rating
+
+  @OneToMany(() => OtherInfo, (otherInfo) => otherInfo.deputy, { nullable: true, cascade: true })
+  otherInfo: OtherInfo[] | null
 }

@@ -28,6 +28,7 @@ import {
 } from '@nestjs/swagger'
 import { Deputy } from '../domain/deputy.entity'
 import { CreateOtherInfoInput } from './input/create.other-info.input'
+import { UpdateRatingInput } from './input/update.rating'
 
 @ApiTags('Deputy')
 @Controller('deputy')
@@ -169,6 +170,7 @@ export class DeputyController {
   }
 
   @ApiBearerAuth()
+  @ApiParam({ name: 'id', type: 'number', description: 'Deputy ID' })
   @ApiOperation({ summary: 'Create OtherInfo for a Deputy' })
   @ApiResponse({ status: 201, description: 'OtherInfo created' })
   @ApiResponse({ status: 404, description: 'Deputy not found' })
@@ -192,6 +194,22 @@ export class DeputyController {
     const result = await this.deputyService.deleteOtherInfo(deputyId, otherInfoId)
     if (!result) {
       throw new NotFoundException('OtherInfo or Deputy not found')
+    }
+    return result
+  }
+
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Update deputy rating info' })
+  @ApiResponse({ status: 204, description: 'Rating update' })
+  @ApiResponse({ status: 404, description: 'Rating or Deputy not found' })
+  @ApiParam({ name: 'deputyId', type: 'number', description: 'Deputy ID' })
+  @ApiBody({ type: UpdateRatingInput })
+  @Put(':deputyId/rating')
+  @UseGuards(AdminGuard)
+  async updateRatingDeputy(@Body() input: UpdateRatingInput, @Param('deputyId') id: number) {
+    const result = await this.deputyService.updateRating(id, input)
+    if (!result) {
+      throw new NotFoundException('Deputy not found')
     }
     return result
   }

@@ -8,6 +8,8 @@ import { UpdateDeputyInput } from './api/input/update-deputy.input'
 import { Property } from './domain/deputy-property.entity'
 import { CreateOtherInfoInput } from './api/input/create.other-info.input'
 import { OtherInfo } from './domain/other-info.entity'
+import { Rating } from './domain/rating.entity'
+import { UpdateRatingInput } from './api/input/update.rating'
 
 @Injectable()
 export class DeputyService {
@@ -20,6 +22,16 @@ export class DeputyService {
   async createDeputy(input: CreateDeputyInput) {
     const photo = input.photo ? await this.aws.uploadFile(await input.photo) : null
     const background = input.background ? await this.aws.uploadFile(await input.background) : null
+
+    const rating = new Rating()
+    rating.attendance = 0
+    rating.corruptionRisks = 0
+    rating.education = 0
+    rating.experienceInPolitics = 0
+    rating.feedFrequency = 0
+    rating.socialReach = 0
+    rating.karmaMinus = 0
+    rating.karmaPlus = 0
 
     const property = new Property()
     property.savings = input.savings
@@ -38,6 +50,7 @@ export class DeputyService {
     deputy.background = background
     deputy.party = await this.pqr.findOne(input.partyId)
     deputy.property = property
+    deputy.rating = rating
 
     return this.deputyRepo.save(deputy)
   }
@@ -119,5 +132,24 @@ export class DeputyService {
       return null
     }
     return this.deputyRepo.deleteOtherInfo(id)
+  }
+
+  async updateRating(id: number, input: UpdateRatingInput) {
+    const deputy = await this.deputyRepo.findOne(id)
+
+    if (!deputy) {
+      return null
+    }
+
+    deputy.rating.attendance = input.attendance ?? deputy.rating.attendance
+    deputy.rating.socialReach = input.socialReach ?? deputy.rating.socialReach
+    deputy.rating.experienceInPolitics = input.experienceInPolitics ?? deputy.rating.experienceInPolitics
+    deputy.rating.education = input.education ?? deputy.rating.education
+    deputy.rating.corruptionRisks = input.corruptionRisks ?? deputy.rating.corruptionRisks
+    deputy.rating.feedFrequency = input.feedFrequency ?? deputy.rating.feedFrequency
+    deputy.rating.karmaPlus = input.karmaPlus ?? deputy.rating.karmaPlus
+    deputy.rating.karmaMinus = input.karmaMinus ?? deputy.rating.karmaMinus
+
+    return this.deputyRepo.save(deputy)
   }
 }

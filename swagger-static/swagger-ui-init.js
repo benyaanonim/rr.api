@@ -932,6 +932,7 @@ window.onload = function() {
               "name": "id",
               "required": true,
               "in": "path",
+              "description": "Deputy ID",
               "schema": {
                 "type": "number"
               }
@@ -993,6 +994,49 @@ window.onload = function() {
             },
             "404": {
               "description": "OtherInfo or Deputy not found"
+            }
+          },
+          "tags": [
+            "Deputy"
+          ],
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/deputy/{deputyId}/rating": {
+        "put": {
+          "operationId": "DeputyController_updateRatingDeputy",
+          "summary": "Update deputy rating info",
+          "parameters": [
+            {
+              "name": "deputyId",
+              "required": true,
+              "in": "path",
+              "description": "Deputy ID",
+              "schema": {
+                "type": "number"
+              }
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateRatingInput"
+                }
+              }
+            }
+          },
+          "responses": {
+            "204": {
+              "description": "Rating update"
+            },
+            "404": {
+              "description": "Rating or Deputy not found"
             }
           },
           "tags": [
@@ -2058,6 +2102,53 @@ window.onload = function() {
           "required": [
             "name",
             "description"
+          ]
+        },
+        "UpdateRatingInput": {
+          "type": "object",
+          "properties": {
+            "attendance": {
+              "type": "number",
+              "description": "attendance of a deputy at meetings of the Verkhovna Rada"
+            },
+            "education": {
+              "type": "number",
+              "description": "Deputy education rating"
+            },
+            "feedFrequency": {
+              "type": "number",
+              "description": "Frequency of bill submissions"
+            },
+            "corruptionRisks": {
+              "type": "number",
+              "description": "Corruption risks"
+            },
+            "experienceInPolitics": {
+              "type": "number",
+              "description": "Experience in politics"
+            },
+            "socialReach": {
+              "type": "number",
+              "description": "Level of social approval"
+            },
+            "karmaMinus": {
+              "type": "number",
+              "description": "Assessment of deeds that have a positive impact on karma"
+            },
+            "karmaPlus": {
+              "type": "number",
+              "description": "Assessment of affairs that negatively affect karma"
+            }
+          },
+          "required": [
+            "attendance",
+            "education",
+            "feedFrequency",
+            "corruptionRisks",
+            "experienceInPolitics",
+            "socialReach",
+            "karmaMinus",
+            "karmaPlus"
           ]
         },
         "PartyCreateInput": {
