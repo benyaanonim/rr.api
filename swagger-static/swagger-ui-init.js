@@ -753,7 +753,59 @@ window.onload = function() {
         "get": {
           "operationId": "DeputyController_deputies",
           "summary": "Get all deputies",
-          "parameters": [],
+          "parameters": [
+            {
+              "name": "gender",
+              "required": false,
+              "in": "query",
+              "description": "Gender of the deputy",
+              "schema": {
+                "enum": [
+                  "male",
+                  "female"
+                ],
+                "type": "string"
+              }
+            },
+            {
+              "name": "partyName",
+              "required": false,
+              "in": "query",
+              "description": "Name of the party",
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "majoritarian",
+              "required": false,
+              "in": "query",
+              "description": "Method of election (true for majoritarian, false for proportional)",
+              "schema": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "page",
+              "required": false,
+              "in": "query",
+              "description": "Page number for pagination",
+              "schema": {
+                "default": 1,
+                "type": "number"
+              }
+            },
+            {
+              "name": "pageSize",
+              "required": false,
+              "in": "query",
+              "description": "Number of items per page for pagination",
+              "schema": {
+                "default": 10,
+                "type": "number"
+              }
+            }
+          ],
           "responses": {
             "200": {
               "description": "Return all deputies",
@@ -1868,6 +1920,10 @@ window.onload = function() {
               "type": "number",
               "description": "ID of the deputy"
             },
+            "majoritarian": {
+              "type": "boolean",
+              "description": "Method of election"
+            },
             "name": {
               "type": "string",
               "description": "Name of the deputy"
@@ -1912,6 +1968,7 @@ window.onload = function() {
           },
           "required": [
             "id",
+            "majoritarian",
             "name",
             "surname",
             "photo",
@@ -1931,6 +1988,10 @@ window.onload = function() {
             "surname": {
               "type": "string",
               "description": "Surname of the deputy"
+            },
+            "majoritarian": {
+              "type": "boolean",
+              "description": "Method of election"
             },
             "birthday": {
               "type": "string",
@@ -2000,6 +2061,7 @@ window.onload = function() {
           "required": [
             "name",
             "surname",
+            "majoritarian",
             "birthday",
             "description",
             "gender",
@@ -2017,6 +2079,10 @@ window.onload = function() {
             "surname": {
               "type": "string",
               "description": "Surname of the deputy"
+            },
+            "majoritarian": {
+              "type": "boolean",
+              "description": "Method of election"
             },
             "birthday": {
               "type": "string",
@@ -2082,7 +2148,10 @@ window.onload = function() {
                 "type": "string"
               }
             }
-          }
+          },
+          "required": [
+            "majoritarian"
+          ]
         },
         "CreateOtherInfoInput": {
           "type": "object",

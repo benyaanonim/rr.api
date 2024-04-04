@@ -24,6 +24,7 @@ import {
   ApiConsumes,
   ApiOperation,
   ApiParam,
+  ApiQuery,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger'
@@ -42,6 +43,7 @@ export class DeputyController {
 
   @Get()
   @ApiOperation({ summary: 'Get all deputies' })
+  // @ApiQuery({ type: QueryFilterDeputy })
   @ApiResponse({
     status: 200,
     description: 'Return all deputies',
