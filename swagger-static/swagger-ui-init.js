@@ -1913,6 +1913,49 @@ window.onload = function() {
             "deputies"
           ]
         },
+        "Rating": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "number"
+            },
+            "attendance": {
+              "type": "number"
+            },
+            "education": {
+              "type": "number"
+            },
+            "feed_frequency": {
+              "type": "number"
+            },
+            "corruption_risks": {
+              "type": "number"
+            },
+            "experience_in_politics": {
+              "type": "number"
+            },
+            "social_reach": {
+              "type": "number"
+            },
+            "karma_minus": {
+              "type": "number"
+            },
+            "karma_plus": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "id",
+            "attendance",
+            "education",
+            "feed_frequency",
+            "corruption_risks",
+            "experience_in_politics",
+            "social_reach",
+            "karma_minus",
+            "karma_plus"
+          ]
+        },
         "Deputy": {
           "type": "object",
           "properties": {
@@ -1964,6 +2007,14 @@ window.onload = function() {
                   "$ref": "#/components/schemas/Party"
                 }
               ]
+            },
+            "rating": {
+              "description": "Rating deputy",
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/Rating"
+                }
+              ]
             }
           },
           "required": [
@@ -1975,7 +2026,8 @@ window.onload = function() {
             "background",
             "birthday",
             "description",
-            "gender"
+            "gender",
+            "rating"
           ]
         },
         "CreateDeputyInput": {

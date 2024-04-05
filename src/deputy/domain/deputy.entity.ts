@@ -64,6 +64,10 @@ export class Deputy {
   @JoinColumn()
   property: Property | null
 
+  @ApiProperty({
+    description: 'Rating deputy',
+    type: Rating,
+  })
   @OneToOne(() => Rating)
   @JoinColumn()
   rating: Rating

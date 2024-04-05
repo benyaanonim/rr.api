@@ -43,7 +43,6 @@ export class DeputyController {
 
   @Get()
   @ApiOperation({ summary: 'Get all deputies' })
-  // @ApiQuery({ type: QueryFilterDeputy })
   @ApiResponse({
     status: 200,
     description: 'Return all deputies',
