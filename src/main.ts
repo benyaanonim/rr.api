@@ -8,7 +8,7 @@ import { ValidationPipe } from '@nestjs/common'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
-  // app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(new ValidationPipe())
   const configService = app.get(ConfigService)
   const PORT = configService.get<number>('PORT', 3000)
   const serverUrl = `http://localhost:${PORT}`

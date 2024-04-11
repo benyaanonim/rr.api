@@ -15,8 +15,8 @@ export class PartyService {
   ) {}
 
   async createParty(input: PartyCreateInput) {
-    const logo = input.logo ? await this.aws.uploadFile(await input.logo) : null
-    const background = input.background ? await this.aws.uploadFile(await input.background) : null
+    const logo = input.logo ? await this.aws.uploadFile(await input.logo[0]) : null
+    const background = input.background ? await this.aws.uploadFile(await input.background[0]) : null
 
     const party = new Party()
     party.convocations = await this.cqr.find(input.convocationIds)

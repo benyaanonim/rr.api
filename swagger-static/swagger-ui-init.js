@@ -833,7 +833,7 @@ window.onload = function() {
             "required": true,
             "description": "Create a new deputy",
             "content": {
-              "multipart/form-data": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/CreateDeputyInput"
                 }
@@ -963,6 +963,44 @@ window.onload = function() {
             },
             "404": {
               "description": "Deputy not found"
+            }
+          },
+          "tags": [
+            "Deputy"
+          ],
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/deputy/{id}/update-image": {
+        "put": {
+          "operationId": "DeputyController_updateDeputyImage",
+          "parameters": [
+            {
+              "name": "id",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "number"
+              }
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "multipart/form-data": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateImageDeputy"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": ""
             }
           },
           "tags": [
@@ -2062,14 +2100,6 @@ window.onload = function() {
                 "female"
               ]
             },
-            "photo": {
-              "type": "file",
-              "description": "Photo of the deputy"
-            },
-            "background": {
-              "type": "file",
-              "description": "Background image of the deputy"
-            },
             "partyId": {
               "type": "number",
               "description": "Party ID of the deputy"
@@ -2116,10 +2146,21 @@ window.onload = function() {
             "majoritarian",
             "birthday",
             "description",
-            "gender",
-            "photo",
-            "background"
+            "gender"
           ]
+        },
+        "UpdateImageDeputy": {
+          "type": "object",
+          "properties": {
+            "photo": {
+              "type": "file",
+              "description": "Photo of the deputy"
+            },
+            "background": {
+              "type": "file",
+              "description": "Background image of the deputy"
+            }
+          }
         },
         "UpdateDeputyInput": {
           "type": "object",

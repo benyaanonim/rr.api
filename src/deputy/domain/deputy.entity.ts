@@ -29,12 +29,12 @@ export class Deputy {
   surname: string
 
   @ApiProperty({ description: 'Photo URL of the deputy' })
-  @Column()
-  photo: string
+  @Column({ nullable: true, default: null })
+  photo: string | null
 
   @ApiProperty({ description: 'Background image URL of the deputy' })
-  @Column()
-  background: string
+  @Column({ nullable: true, default: null })
+  background: string | null
 
   @ApiProperty({
     description: 'Birthday of the deputy',
@@ -68,9 +68,9 @@ export class Deputy {
     description: 'Rating deputy',
     type: Rating,
   })
-  @OneToOne(() => Rating)
+  @OneToOne(() => Rating, { nullable: true, cascade: true })
   @JoinColumn()
-  rating: Rating
+  rating: Rating | null
 
   @OneToMany(() => OtherInfo, (otherInfo) => otherInfo.deputy, { nullable: true, cascade: true })
   otherInfo: OtherInfo[] | null

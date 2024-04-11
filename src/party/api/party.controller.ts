@@ -8,6 +8,7 @@ import {
   Post,
   Put,
   UploadedFile,
+  UploadedFiles,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common'
@@ -71,7 +72,7 @@ export class PartyController {
   @ApiConsumes('multipart/form-data')
   async createParty(
     @Body() input: PartyCreateInput,
-    @UploadedFile()
+    @UploadedFiles()
     files: {
       logo?: Express.Multer.File
       background?: Express.Multer.File

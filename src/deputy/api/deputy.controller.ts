@@ -32,6 +32,7 @@ import { Deputy } from '../domain/deputy.entity'
 import { CreateOtherInfoInput } from './input/create.other-info.input'
 import { UpdateRatingInput } from './input/update.rating'
 import { QueryFilterDeputy } from './input/query-filter.deputy'
+import { UpdateImageDeputy } from './input/update-image-deputy'
 
 @ApiTags('Deputy')
 @Controller('deputy')
@@ -73,14 +74,7 @@ export class DeputyController {
 
   @Post()
   @UseGuards(AdminGuard)
-  @UseInterceptors(
-    FileFieldsInterceptor([
-      { name: 'photo', maxCount: 1 },
-      { name: 'background', maxCount: 1 },
-    ]),
-  )
   @ApiOperation({ summary: 'Create deputy' })
-  @ApiConsumes('multipart/form-data')
   @ApiBody({
     description: 'Create a new deputy',
     type: CreateDeputyInput,
@@ -95,17 +89,34 @@ export class DeputyController {
     description: 'Bad request',
   })
   @ApiBearerAuth()
-  async createDeputy(
-    @Body() input: CreateDeputyInput,
+  async createDeputy(@Body() input: CreateDeputyInput) {
+    return this.deputyService.createDeputy(input)
+  }
+
+  @Put(':id/update-image')
+  @UseGuards(AdminGuard)
+  @ApiConsumes('multipart/form-data')
+  @ApiBearerAuth()
+  @ApiBody({ type: UpdateImageDeputy })
+  @UseInterceptors(
+    FileFieldsInterceptor([
+      { name: 'photo', maxCount: 1 },
+      { name: 'background', maxCount: 1 },
+    ]),
+  )
+  async updateDeputyImage(
     @UploadedFiles()
     files: {
       photo?: Express.Multer.File
       background?: Express.Multer.File
     },
+    @Param('id') id: number,
   ) {
-    input.photo = files.photo
-    input.background = files.background
-    return this.deputyService.createDeputy(input)
+    const result = await this.deputyService.updateDeputyImage(id, files.photo, files.background)
+    if (!result) {
+      throw new NotFoundException(`Deputy with this ID: ${id} was not found`)
+    }
+    return result
   }
 
   @Put(':id')

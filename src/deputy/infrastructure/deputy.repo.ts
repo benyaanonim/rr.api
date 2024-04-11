@@ -14,6 +14,7 @@ export class DeputyRepo {
     })
   }
   async save(entity: Deputy | OtherInfo) {
+    console.log(entity)
     return this.em.save(entity)
   }
 

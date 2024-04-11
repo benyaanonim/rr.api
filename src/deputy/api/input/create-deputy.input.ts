@@ -46,14 +46,6 @@ export class CreateDeputyInput {
   @IsNotEmpty()
   gender: Gender
 
-  @ApiProperty({ description: 'Photo of the deputy', type: 'file' })
-  @IsNotEmpty()
-  photo: Express.Multer.File
-
-  @ApiProperty({ description: 'Background image of the deputy', type: 'file' })
-  @IsNotEmpty()
-  background: Express.Multer.File
-
   @ApiProperty({ description: 'Party ID of the deputy', required: false })
   @IsNumber()
   @IsOptional()

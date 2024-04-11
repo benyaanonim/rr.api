@@ -22,9 +22,13 @@ export class AwsService {
   }
 
   async uploadFile(file: Express.Multer.File): Promise<string> {
-    const readStream = this.bufferToStream(file.buffer)
-    const fileName = this.generateFileName(file.originalname)
-    return this.uploadToS3(readStream, fileName, file.mimetype)
+    try {
+      const readStream = this.bufferToStream(file.buffer)
+      const fileName = this.generateFileName(file.originalname)
+      return this.uploadToS3(readStream, fileName, file.mimetype)
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   private bufferToStream(buffer: Buffer): Readable {
@@ -35,23 +39,32 @@ export class AwsService {
   }
 
   private generateFileName(originalName: string): string {
-    const timestamp = Date.now().toString()
-    const hashedFileName = crypto.createHash('md5').update(timestamp).digest('hex')
-    const extension = originalName.substring(originalName.lastIndexOf('.'))
-    return `${hashedFileName}${extension}`
+    try {
+      const timestamp = new Date().toString()
+      const hashedFileName = crypto.createHash('md5').update(timestamp).digest('hex')
+      const extensionIndex = originalName.lastIndexOf('.')
+      const extension = extensionIndex !== -1 ? originalName.substring(extensionIndex) : ''
+      return `${hashedFileName}${extension}`
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   private async uploadToS3(stream: Readable, fileName: string, mimetype: string): Promise<string> {
-    const params: AWS.S3.PutObjectRequest = {
-      Bucket: this.bucketName,
-      Key: fileName,
-      Body: stream,
-      ContentType: mimetype,
-      ContentDisposition: 'inline',
-    }
+    try {
+      const params: AWS.S3.PutObjectRequest = {
+        Bucket: this.bucketName,
+        Key: fileName,
+        Body: stream,
+        ContentType: mimetype,
+        ContentDisposition: 'inline',
+      }
 
-    const { Location } = await this.s3.upload(params).promise()
-    return Location
+      const { Location } = await this.s3.upload(params).promise()
+      return Location
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   async deleteImage(image: string): Promise<void> {

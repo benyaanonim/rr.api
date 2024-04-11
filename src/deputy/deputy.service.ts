@@ -19,41 +19,56 @@ export class DeputyService {
     protected readonly pqr: PartyQueryRepo,
   ) {}
 
+  async updateDeputyImage(id: number, photo?: Express.Multer.File, background?: Express.Multer.File) {
+    try {
+      const deputy = await this.deputyRepo.findOne(id)
+      if (!deputy) {
+        return null
+      }
+      deputy.photo = photo ? await this.aws.uploadFile(photo[0]) : deputy.photo
+      deputy.background = background ? await this.aws.uploadFile(background[0]) : deputy.background
+      return this.deputyRepo.save(deputy)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   async createDeputy(input: CreateDeputyInput) {
-    const photo = input.photo ? await this.aws.uploadFile(await input.photo) : null
-    const background = input.background ? await this.aws.uploadFile(await input.background) : null
+    console.log(input)
+    try {
+      const rating = new Rating()
+      rating.attendance = 0
+      rating.corruptionRisks = 0
+      rating.education = 0
+      rating.experienceInPolitics = 0
+      rating.feedFrequency = 0
+      rating.socialReach = 0
+      rating.karmaMinus = 0
+      rating.karmaPlus = 0
 
-    const rating = new Rating()
-    rating.attendance = 0
-    rating.corruptionRisks = 0
-    rating.education = 0
-    rating.experienceInPolitics = 0
-    rating.feedFrequency = 0
-    rating.socialReach = 0
-    rating.karmaMinus = 0
-    rating.karmaPlus = 0
+      const property = new Property()
+      property.savings = input.savings || null
+      property.other = input.other || null
+      property.realEstate = input.realEstate || null
+      property.cars = input.cars || null
+      property.business = input.business || null
 
-    const property = new Property()
-    property.savings = input.savings
-    property.other = input.other
-    property.realEstate = input.realEstate
-    property.cars = input.cars
-    property.business = input.business
+      const deputy = new Deputy()
+      deputy.name = input.name
+      deputy.surname = input.surname
+      deputy.birthday = input.birthday
+      deputy.description = input.description
+      deputy.gender = input.gender
+      deputy.party = await this.pqr.findOne(input.partyId)
+      deputy.property = property
+      deputy.majoritarian = input.majoritarian
+      deputy.rating = rating
 
-    const deputy = new Deputy()
-    deputy.name = input.name
-    deputy.surname = input.surname
-    deputy.birthday = input.birthday
-    deputy.description = input.description
-    deputy.gender = input.gender
-    deputy.photo = photo
-    deputy.background = background
-    deputy.party = await this.pqr.findOne(input.partyId)
-    deputy.property = property
-    deputy.majoritarian = input.majoritarian
-    deputy.rating = rating
-
-    return this.deputyRepo.save(deputy)
+      return this.deputyRepo.save(deputy)
+    } catch (err) {
+      console.error(err.message)
+      console.log(err)
+    }
   }
 
   async updateDeputy(input: UpdateDeputyInput, id: number) {
@@ -66,14 +81,14 @@ export class DeputyService {
       if (deputy.photo) {
         await this.aws.deleteImage(deputy.photo)
       }
-      deputy.photo = await this.aws.uploadFile(await input.photo)
+      deputy.photo = await this.aws.uploadFile(input.photo)
     }
 
     if (input.background) {
       if (deputy.background) {
         await this.aws.deleteImage(deputy.background)
       }
-      deputy.background = await this.aws.uploadFile(await input.background)
+      deputy.background = await this.aws.uploadFile(input.background)
     }
 
     deputy.property.savings = input.savings ?? deputy.property.savings
