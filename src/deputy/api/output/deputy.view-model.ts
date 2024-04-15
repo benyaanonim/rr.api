@@ -25,7 +25,6 @@ class PartyViewModel {
     this.background = party.background
   }
 }
-
 export class OtherInfoViewModel {
   @ApiProperty({ description: 'ID of the additional information entry' })
   id: number
