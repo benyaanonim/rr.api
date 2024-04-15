@@ -15,7 +15,7 @@ export class Deputy {
   @PrimaryGeneratedColumn()
   id: number
 
-  @Column()
+  @Column({ nullable: true })
   majoritarian: boolean
 
   @Column()
