@@ -11,7 +11,7 @@ export class DeputyQueryRepo {
   async findOne(id: number) {
     const deputy = await this.em.findOne(Deputy, {
       where: { id: id },
-      relations: ['party', 'property', 'otherInfo', 'rating'],
+      relations: ['party', 'property', 'otherInfo', 'rating', 'deputyTag'],
     })
     return new DeputyViewModel(deputy)
   }
@@ -23,6 +23,7 @@ export class DeputyQueryRepo {
       .leftJoinAndSelect('deputy.property', 'property')
       .leftJoinAndSelect('deputy.otherInfo', 'otherInfo')
       .leftJoinAndSelect('deputy.rating', 'rating')
+      .leftJoinAndSelect('deputy.deputyTag', 'deputyTag')
 
     if (filter.gender) {
       queryBuilder.andWhere('deputy.gender = :gender', { gender: filter.gender })

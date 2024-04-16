@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
+import { Injectable } from '@nestjs/common'
 import { EntityManager } from 'typeorm'
 import { Party } from '../domain/party.entity'
 

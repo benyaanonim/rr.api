@@ -1,9 +1,19 @@
-import { ApiProperty } from '@nestjs/swagger'
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm'
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm'
 import { Party } from '../../party/domain/party.entity'
 import { Property } from './deputy-property.entity'
 import { OtherInfo } from './other-info.entity'
 import { Rating } from './rating.entity'
+import { DeputyTag } from './deputy-tag.entity'
 
 export enum Gender {
   male = 'male',
@@ -18,6 +28,12 @@ export class Deputy {
   @Column({ nullable: true })
   majoritarian: boolean
 
+  @Column({ name: 'job_title', nullable: true })
+  jobTitle: string | null
+
+  @Column({ name: 'state_level', nullable: true })
+  stateLevel: string | null
+
   @Column()
   name: string
 
@@ -27,14 +43,14 @@ export class Deputy {
   @Column({ nullable: true })
   patronymic: string | null
 
-  @Column({ nullable: true, default: null })
-  photo: string | null
+  @Column({ nullable: true, default: null, type: 'simple-array' })
+  photo: string[] | null
 
   @Column({ nullable: true, default: null })
   background: string | null
 
-  @Column({ type: 'timestamp' })
-  birthday: Date
+  @Column({ nullable: true })
+  birthday: string | null
 
   @Column()
   description: string
@@ -55,4 +71,8 @@ export class Deputy {
 
   @OneToMany(() => OtherInfo, (otherInfo) => otherInfo.deputy, { nullable: true, cascade: true })
   otherInfo: OtherInfo[] | null
+
+  @ManyToMany(() => DeputyTag, (deputyTag) => deputyTag.deputy, { nullable: true })
+  @JoinTable()
+  deputyTag: DeputyTag[] | null
 }

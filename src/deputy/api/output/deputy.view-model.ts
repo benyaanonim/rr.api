@@ -4,6 +4,23 @@ import { Property } from '../../domain/deputy-property.entity'
 import { Rating } from '../../domain/rating.entity'
 import { OtherInfo } from '../../domain/other-info.entity'
 import { Party } from '../../../party/domain/party.entity'
+import { DeputyTag } from '../../domain/deputy-tag.entity'
+
+class DeputyTagViewModel {
+  @ApiProperty({ description: 'ID of the additional information entry' })
+  id: number
+
+  @ApiProperty({ description: 'Deputy tag name' })
+  name: string
+
+  @ApiProperty({ description: 'Deputy tag description' })
+  description: string
+  constructor(deputyTag: DeputyTag) {
+    this.id = deputyTag.id
+    this.name = deputyTag.name
+    this.description = deputyTag.descriptions
+  }
+}
 
 class PartyViewModel {
   @ApiProperty({ description: 'ID of the additional information entry' })
@@ -127,16 +144,22 @@ export class DeputyViewModel {
   patronymic: string | null
 
   @ApiProperty({ description: 'Photo URL of the deputy' })
-  photo: string | null
+  photo: string[] | null
 
   @ApiProperty({ description: 'Background image URL of the deputy' })
   background: string | null
 
   @ApiProperty({ description: 'Birthday of the deputy', type: 'string', format: 'date' })
-  birthday: string // Only the date part
+  birthday: string
 
   @ApiProperty({ description: 'Description of the deputy' })
   description: string
+
+  @ApiProperty({ description: 'Deputy state level' })
+  stateLevel: string
+
+  @ApiProperty({ description: 'Deputy job title' })
+  jobTitle: string
 
   @ApiProperty({ description: 'Gender of the deputy', enum: Gender })
   gender: Gender
@@ -152,20 +175,26 @@ export class DeputyViewModel {
 
   @ApiProperty({ description: 'Other information about the deputy', type: [OtherInfoViewModel] })
   otherInfo: OtherInfoViewModel[] | null
+
+  @ApiProperty({ description: 'Deputy tags', type: [DeputyTagViewModel] })
+  deputyTag: DeputyTagViewModel[] | null
   constructor(deputy: Deputy) {
     this.id = deputy.id
-    this.majoritarian = deputy.majoritarian
     this.name = deputy.name
     this.surname = deputy.surname
     this.patronymic = deputy.patronymic
+    this.majoritarian = deputy.majoritarian
+    this.jobTitle = deputy.jobTitle
+    this.stateLevel = deputy.stateLevel
     this.photo = deputy.photo
     this.background = deputy.background
-    this.birthday = deputy.birthday.toISOString().split('T')[0]
+    this.birthday = deputy.birthday
     this.description = deputy.description
     this.gender = deputy.gender
     this.party = deputy.party ? new PartyViewModel(deputy.party) : null
     this.property = deputy.property ? new PropertyViewModel(deputy.property) : null
     this.rating = deputy.rating ? new RatingViewModel(deputy.rating) : null
     this.otherInfo = deputy.otherInfo ? deputy.otherInfo.map((info) => new OtherInfoViewModel(info)) : null
+    this.deputyTag = deputy.deputyTag ? deputy.deputyTag.map((dt) => new DeputyTagViewModel(dt)) : null
   }
 }

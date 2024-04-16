@@ -1,20 +1,28 @@
 import { Injectable } from '@nestjs/common'
-import { EntityManager } from 'typeorm'
+import { EntityManager, In } from 'typeorm'
 import { Deputy } from '../domain/deputy.entity'
 import { OtherInfo } from '../domain/other-info.entity'
+import { DeputyTag } from '../domain/deputy-tag.entity'
 
 @Injectable()
 export class DeputyRepo {
   constructor(protected readonly em: EntityManager) {}
 
+  async findDeputyTags(ids: number[]) {
+    return this.em.find(DeputyTag, { where: { id: In(ids) } })
+  }
+
+  async findOneDeputyTag(id: number) {
+    return this.em.findOne(DeputyTag, { where: { id: id } })
+  }
+
   async findOne(id: number) {
     return this.em.findOne(Deputy, {
       where: { id: id },
-      relations: ['property', 'party', 'otherInfo', 'rating'],
+      relations: ['property', 'party', 'otherInfo', 'rating', 'deputyTag'],
     })
   }
-  async save(entity: Deputy | OtherInfo) {
-    console.log(entity)
+  async save(entity: Deputy | OtherInfo | DeputyTag) {
     return this.em.save(entity)
   }
 
@@ -24,5 +32,9 @@ export class DeputyRepo {
 
   async deleteOtherInfo(id: number) {
     return this.em.delete(OtherInfo, id)
+  }
+
+  async deleteDeputyTag(id: number) {
+    return this.em.delete(DeputyTag, id)
   }
 }

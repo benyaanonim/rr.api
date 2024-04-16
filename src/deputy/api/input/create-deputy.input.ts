@@ -27,6 +27,16 @@ export class CreateDeputyInput {
   @IsNotEmpty()
   patronymic: string
 
+  @ApiProperty({ description: 'Job title of the deputy' })
+  @IsString()
+  @IsNotEmpty()
+  jobTitle: string
+
+  @ApiProperty({ description: 'State level of the deputy' })
+  @IsString()
+  @IsNotEmpty()
+  stateLevel: string
+
   @ApiProperty({ description: 'Method of election' })
   @IsBoolean()
   @IsNotEmpty()
@@ -37,9 +47,8 @@ export class CreateDeputyInput {
     type: 'string',
     format: 'date',
   })
-  @IsDateString()
   @IsNotEmpty()
-  birthday: Date
+  birthday: string
 
   @ApiProperty({ description: 'Description of the deputy' })
   @IsString()

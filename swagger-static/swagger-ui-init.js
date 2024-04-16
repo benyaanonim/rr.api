@@ -963,7 +963,7 @@ window.onload = function() {
               "content": {
                 "application/json": {
                   "schema": {
-                    "$ref": "#/components/schemas/Deputy"
+                    "$ref": "#/components/schemas/DeputyViewModel"
                   }
                 }
               }
@@ -1042,7 +1042,14 @@ window.onload = function() {
           },
           "responses": {
             "204": {
-              "description": "The deputy has been successfully updated."
+              "description": "The deputy has been successfully updated.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/DeputyViewModel"
+                  }
+                }
+              }
             },
             "400": {
               "description": "Bad request"
@@ -1244,6 +1251,68 @@ window.onload = function() {
             },
             "404": {
               "description": "Rating or Deputy not found"
+            }
+          },
+          "tags": [
+            "Deputy"
+          ],
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/deputy/deputy-tag": {
+        "post": {
+          "operationId": "DeputyController_createDeputyTag",
+          "summary": "Create deputy tag",
+          "parameters": [],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateDeputyTag"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": ""
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          },
+          "tags": [
+            "Deputy"
+          ],
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/deputy/deputy-tag/{id}": {
+        "delete": {
+          "operationId": "DeputyController_deleteDeputyTag",
+          "summary": "Delete deputy tag",
+          "parameters": [
+            {
+              "name": "id",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "number"
+              }
+            }
+          ],
+          "responses": {
+            "404": {
+              "description": ""
             }
           },
           "tags": [
@@ -2222,6 +2291,28 @@ window.onload = function() {
             "description"
           ]
         },
+        "DeputyTagViewModel": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "number",
+              "description": "ID of the additional information entry"
+            },
+            "name": {
+              "type": "string",
+              "description": "Deputy tag name"
+            },
+            "description": {
+              "type": "string",
+              "description": "Deputy tag description"
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "description"
+          ]
+        },
         "DeputyViewModel": {
           "type": "object",
           "properties": {
@@ -2246,8 +2337,11 @@ window.onload = function() {
               "description": "Patronymic of the deputy"
             },
             "photo": {
-              "type": "string",
-              "description": "Photo URL of the deputy"
+              "description": "Photo URL of the deputy",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             },
             "background": {
               "type": "string",
@@ -2261,6 +2355,14 @@ window.onload = function() {
             "description": {
               "type": "string",
               "description": "Description of the deputy"
+            },
+            "stateLevel": {
+              "type": "string",
+              "description": "Deputy state level"
+            },
+            "jobTitle": {
+              "type": "string",
+              "description": "Deputy job title"
             },
             "gender": {
               "type": "string",
@@ -2300,6 +2402,13 @@ window.onload = function() {
               "items": {
                 "$ref": "#/components/schemas/OtherInfoViewModel"
               }
+            },
+            "deputyTag": {
+              "description": "Deputy tags",
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/DeputyTagViewModel"
+              }
             }
           },
           "required": [
@@ -2312,11 +2421,14 @@ window.onload = function() {
             "background",
             "birthday",
             "description",
+            "stateLevel",
+            "jobTitle",
             "gender",
             "party",
             "property",
             "rating",
-            "otherInfo"
+            "otherInfo",
+            "deputyTag"
           ]
         },
         "CreateDeputyInput": {
@@ -2334,6 +2446,14 @@ window.onload = function() {
               "type": "string",
               "description": "patronymic of the deputy"
             },
+            "jobTitle": {
+              "type": "string",
+              "description": "Job title of the deputy"
+            },
+            "stateLevel": {
+              "type": "string",
+              "description": "State level of the deputy"
+            },
             "majoritarian": {
               "type": "boolean",
               "description": "Method of election"
@@ -2399,28 +2519,32 @@ window.onload = function() {
             "name",
             "surname",
             "patronymic",
+            "jobTitle",
+            "stateLevel",
             "majoritarian",
             "birthday",
             "description",
             "gender"
           ]
         },
-        "Deputy": {
-          "type": "object",
-          "properties": {}
-        },
         "UpdateImageDeputy": {
           "type": "object",
           "properties": {
             "photo": {
-              "type": "file",
-              "description": "Photo of the deputy"
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "binary"
+              }
             },
             "background": {
               "type": "file",
               "description": "Background image of the deputy"
             }
-          }
+          },
+          "required": [
+            "photo"
+          ]
         },
         "UpdateDeputyInput": {
           "type": "object",
@@ -2437,9 +2561,24 @@ window.onload = function() {
               "type": "string",
               "description": "patronymic of the deputy"
             },
+            "jobTitle": {
+              "type": "string",
+              "description": "job title of the deputy"
+            },
+            "stateLevel": {
+              "type": "string",
+              "description": "State level of the deputy"
+            },
             "majoritarian": {
               "type": "boolean",
               "description": "Method of election"
+            },
+            "deputyTagIds": {
+              "description": "Deputy tag ids",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             },
             "birthday": {
               "type": "string",
@@ -2499,7 +2638,9 @@ window.onload = function() {
             }
           },
           "required": [
-            "majoritarian"
+            "stateLevel",
+            "majoritarian",
+            "deputyTagIds"
           ]
         },
         "CreateOtherInfoInput": {
@@ -2567,6 +2708,23 @@ window.onload = function() {
             "socialReach",
             "karmaMinus",
             "karmaPlus"
+          ]
+        },
+        "CreateDeputyTag": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "Deputy tag name"
+            },
+            "description": {
+              "type": "string",
+              "description": "Deputy tag description"
+            }
+          },
+          "required": [
+            "name",
+            "description"
           ]
         },
         "Convocation": {

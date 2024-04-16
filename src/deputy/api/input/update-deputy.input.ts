@@ -27,10 +27,24 @@ export class UpdateDeputyInput {
   @IsNotEmpty()
   patronymic: string | null
 
+  @ApiProperty({ description: 'job title of the deputy', required: false })
+  @IsString()
+  @IsNotEmpty()
+  jobTitle: string | null
+
+  @ApiProperty({ description: 'State level of the deputy' })
+  @IsString()
+  @IsNotEmpty()
+  stateLevel: string | null
+
   @ApiProperty({ description: 'Method of election' })
   @IsBoolean()
   @IsNotEmpty()
   majoritarian: boolean | null
+
+  @ApiProperty({ description: 'Deputy tag ids' })
+  @IsNotEmpty()
+  deputyTagIds: number[] | null
 
   @ApiProperty({
     description: 'Birthday of the deputy',
@@ -38,9 +52,9 @@ export class UpdateDeputyInput {
     format: 'date',
     required: false,
   })
-  @IsDateString()
+  @IsString()
   @IsOptional()
-  birthday: Date | null
+  birthday: string | null
 
   @ApiProperty({ description: 'Description of the deputy', required: false })
   @IsString()
