@@ -1652,6 +1652,168 @@ window.onload = function() {
             }
           ]
         }
+      },
+      "/comments/{deputyId}": {
+        "get": {
+          "operationId": "CommentController_getComments",
+          "summary": "Fetch comments by deputyId",
+          "parameters": [
+            {
+              "name": "deputyId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "number"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/CommentViewModel"
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": ""
+            }
+          },
+          "tags": [
+            "Comments"
+          ]
+        }
+      },
+      "/comments": {
+        "post": {
+          "operationId": "CommentController_create",
+          "summary": "Create a comment",
+          "parameters": [],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateCommentInput"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Creation successful",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/CommentViewModel"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": ""
+            }
+          },
+          "tags": [
+            "Comments"
+          ]
+        }
+      },
+      "/comments/{id}": {
+        "put": {
+          "operationId": "CommentController_updateComment",
+          "summary": "Update a comment",
+          "parameters": [
+            {
+              "name": "id",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "number"
+              }
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateCommentInput"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Updating successful",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/CommentViewModel"
+                  }
+                }
+              }
+            }
+          },
+          "tags": [
+            "Comments"
+          ]
+        },
+        "delete": {
+          "operationId": "CommentController_deleteComment",
+          "summary": "Delete a comment",
+          "parameters": [
+            {
+              "name": "id",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "number"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Deleting successful"
+            }
+          },
+          "tags": [
+            "Comments"
+          ]
+        }
+      },
+      "/like": {
+        "post": {
+          "operationId": "LikeController_processLike",
+          "parameters": [],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LikeInputModel"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": ""
+            },
+            "404": {
+              "description": "Comment not found"
+            }
+          },
+          "tags": [
+            "Like"
+          ]
+        }
       }
     },
     "info": {
@@ -2892,6 +3054,93 @@ window.onload = function() {
           },
           "required": [
             "name"
+          ]
+        },
+        "CommentViewModel": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "number",
+              "description": "Comment id"
+            },
+            "text": {
+              "type": "string",
+              "description": "Comment text"
+            },
+            "createdAt": {
+              "type": "string",
+              "description": "Comment created date"
+            },
+            "likeCount": {
+              "type": "number",
+              "description": "Comment likes count"
+            },
+            "parentId": {
+              "type": "number",
+              "description": "Comment parent id"
+            },
+            "deputyId": {
+              "type": "number",
+              "description": "Comment deputy id"
+            }
+          },
+          "required": [
+            "id",
+            "text",
+            "createdAt",
+            "likeCount",
+            "parentId",
+            "deputyId"
+          ]
+        },
+        "CreateCommentInput": {
+          "type": "object",
+          "properties": {
+            "text": {
+              "type": "string",
+              "description": "Text of the comment"
+            },
+            "parentId": {
+              "type": "number",
+              "description": "Parent comment ID if any"
+            },
+            "deputyId": {
+              "type": "number",
+              "description": "ID of the deputy the comment is related to"
+            }
+          },
+          "required": [
+            "text",
+            "deputyId"
+          ]
+        },
+        "UpdateCommentInput": {
+          "type": "object",
+          "properties": {
+            "text": {
+              "type": "string",
+              "description": "Text of the comment"
+            }
+          },
+          "required": [
+            "text"
+          ]
+        },
+        "LikeInputModel": {
+          "type": "object",
+          "properties": {
+            "commentId": {
+              "type": "number",
+              "description": "Comment id for like"
+            },
+            "status": {
+              "type": "boolean",
+              "description": "Like status: true/false"
+            }
+          },
+          "required": [
+            "commentId",
+            "status"
           ]
         }
       }
