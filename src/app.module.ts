@@ -17,10 +17,10 @@ import { APP_GUARD } from '@nestjs/core'
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler'
 import { DeputyModule } from './deputy/deputy.module'
 import { PartyModule } from './party/party.module'
-import { MulterModule } from '@nestjs/platform-express'
 import { ConvocationModule } from './convocation/convocation.module'
 import { CommentModule } from './comment/comment.module'
 import { LikeModule } from './like/like.module'
+import { HallModule } from './hall/hall.module'
 
 @Module({
   imports: [
@@ -74,6 +74,7 @@ import { LikeModule } from './like/like.module'
     ConvocationModule,
     CommentModule,
     LikeModule,
+    HallModule,
   ],
   controllers: [AppController],
   providers: [AppService, { provide: APP_GUARD, useClass: ThrottlerGuard }],

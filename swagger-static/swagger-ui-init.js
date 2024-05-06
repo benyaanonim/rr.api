@@ -1814,6 +1814,211 @@ window.onload = function() {
             "Like"
           ]
         }
+      },
+      "/hall": {
+        "get": {
+          "operationId": "HallController_getAll",
+          "summary": "Retrieve all halls",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "Successfully retrieved all halls",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/HallViewModel"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "tags": [
+            "Halls"
+          ]
+        },
+        "post": {
+          "operationId": "HallController_createHall",
+          "summary": "Create a new hall",
+          "parameters": [],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HallCreateInput"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Hall successfully created"
+            }
+          },
+          "tags": [
+            "Halls"
+          ]
+        }
+      },
+      "/hall/{id}": {
+        "get": {
+          "operationId": "HallController_getHallById",
+          "summary": "Get a single hall by ID",
+          "parameters": [
+            {
+              "name": "id",
+              "required": true,
+              "in": "path",
+              "description": "The ID of the hall to retrieve",
+              "schema": {
+                "type": "number"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Hall found and returned",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HallViewModel"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Hall not found"
+            }
+          },
+          "tags": [
+            "Halls"
+          ]
+        }
+      },
+      "/hall/{hallId}/places/{placeId}/assign-deputy": {
+        "post": {
+          "operationId": "HallController_assignDeputyToPlace",
+          "summary": "Assign a deputy to a place in a hall",
+          "parameters": [
+            {
+              "name": "hallId",
+              "required": true,
+              "in": "path",
+              "description": "ID of the hall",
+              "schema": {
+                "type": "number"
+              }
+            },
+            {
+              "name": "placeId",
+              "required": true,
+              "in": "path",
+              "description": "ID of the place in the hall",
+              "schema": {
+                "type": "number"
+              }
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TypeIdInput"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Deputy successfully assigned to place"
+            },
+            "404": {
+              "description": "Hall or place not found"
+            }
+          },
+          "tags": [
+            "Halls"
+          ]
+        }
+      },
+      "/hall/{hallId}/places/{placeId}/remove-deputy": {
+        "post": {
+          "operationId": "HallController_removeDeputyForPlace",
+          "summary": "Remove a deputy from a place in a hall",
+          "parameters": [
+            {
+              "name": "hallId",
+              "required": true,
+              "in": "path",
+              "description": "ID of the hall",
+              "schema": {
+                "type": "number"
+              }
+            },
+            {
+              "name": "placeId",
+              "required": true,
+              "in": "path",
+              "description": "ID of the place in the hall",
+              "schema": {
+                "type": "number"
+              }
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TypeIdInput"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Deputy successfully removed from place"
+            },
+            "404": {
+              "description": "Hall or place not found"
+            }
+          },
+          "tags": [
+            "Halls"
+          ]
+        }
+      },
+      "/hall/{hallId}": {
+        "delete": {
+          "operationId": "HallController_deleteHall",
+          "summary": "Delete a hall",
+          "parameters": [
+            {
+              "name": "hallId",
+              "required": true,
+              "in": "path",
+              "description": "ID of the hall to delete",
+              "schema": {
+                "type": "number"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Hall successfully deleted"
+            },
+            "404": {
+              "description": "Hall not found"
+            }
+          },
+          "tags": [
+            "Halls"
+          ]
+        }
       }
     },
     "info": {
@@ -2571,6 +2776,10 @@ window.onload = function() {
               "items": {
                 "$ref": "#/components/schemas/DeputyTagViewModel"
               }
+            },
+            "place": {
+              "type": "number",
+              "description": "Deputy place in hall"
             }
           },
           "required": [
@@ -2590,7 +2799,8 @@ window.onload = function() {
             "property",
             "rating",
             "otherInfo",
-            "deputyTag"
+            "deputyTag",
+            "place"
           ]
         },
         "CreateDeputyInput": {
@@ -3141,6 +3351,100 @@ window.onload = function() {
           "required": [
             "commentId",
             "status"
+          ]
+        },
+        "PlaceViewModel": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "number",
+              "description": "ID of the place",
+              "example": 1
+            },
+            "placeNumber": {
+              "type": "number",
+              "description": "Number of the place within the hall",
+              "example": 101
+            },
+            "deputy": {
+              "description": "Assigned deputy, if any",
+              "nullable": true,
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/DeputyViewModel"
+                }
+              ]
+            }
+          },
+          "required": [
+            "id",
+            "placeNumber",
+            "deputy"
+          ]
+        },
+        "HallViewModel": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "number",
+              "description": "ID of the hall",
+              "example": 1
+            },
+            "name": {
+              "type": "string",
+              "description": "Name of the hall",
+              "example": "Main Hall"
+            },
+            "numberOfPlaces": {
+              "type": "number",
+              "description": "Number of places in the hall",
+              "example": 150
+            },
+            "places": {
+              "description": "List of places in the hall",
+              "nullable": true,
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/PlaceViewModel"
+              }
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "numberOfPlaces",
+            "places"
+          ]
+        },
+        "HallCreateInput": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "Hall name",
+              "example": "The Verkhovna Rada"
+            },
+            "numberOfPlaces": {
+              "type": "number",
+              "description": "Number of seats in the hall",
+              "example": "450"
+            }
+          },
+          "required": [
+            "name",
+            "numberOfPlaces"
+          ]
+        },
+        "TypeIdInput": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "number",
+              "description": "Deputy Id"
+            }
+          },
+          "required": [
+            "id"
           ]
         }
       }

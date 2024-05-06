@@ -24,6 +24,7 @@ export class DeputyQueryRepo {
       .leftJoinAndSelect('deputy.otherInfo', 'otherInfo')
       .leftJoinAndSelect('deputy.rating', 'rating')
       .leftJoinAndSelect('deputy.deputyTag', 'deputyTag')
+      .leftJoinAndSelect('deputy.place', 'place')
 
     if (filter.gender) {
       queryBuilder.andWhere('deputy.gender = :gender', { gender: filter.gender })

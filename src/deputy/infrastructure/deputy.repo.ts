@@ -19,7 +19,7 @@ export class DeputyRepo {
   async findOne(id: number) {
     return this.em.findOne(Deputy, {
       where: { id: id },
-      relations: ['property', 'party', 'otherInfo', 'rating', 'deputyTag'],
+      relations: ['property', 'party', 'otherInfo', 'rating', 'deputyTag', 'place'],
     })
   }
   async save(entity: Deputy | OtherInfo | DeputyTag) {

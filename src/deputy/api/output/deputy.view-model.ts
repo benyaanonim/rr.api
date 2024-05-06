@@ -178,6 +178,9 @@ export class DeputyViewModel {
 
   @ApiProperty({ description: 'Deputy tags', type: [DeputyTagViewModel] })
   deputyTag: DeputyTagViewModel[] | null
+
+  @ApiProperty({ description: 'Deputy place in hall', type: Number })
+  place: number
   constructor(deputy: Deputy) {
     this.id = deputy.id
     this.name = deputy.name
@@ -196,5 +199,6 @@ export class DeputyViewModel {
     this.rating = deputy.rating ? new RatingViewModel(deputy.rating) : null
     this.otherInfo = deputy.otherInfo ? deputy.otherInfo.map((info) => new OtherInfoViewModel(info)) : null
     this.deputyTag = deputy.deputyTag ? deputy.deputyTag.map((dt) => new DeputyTagViewModel(dt)) : null
+    this.place = deputy.place ? deputy.place.placeNumber : null
   }
 }

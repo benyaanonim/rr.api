@@ -14,6 +14,7 @@ import { Property } from './deputy-property.entity'
 import { OtherInfo } from './other-info.entity'
 import { Rating } from './rating.entity'
 import { DeputyTag } from './deputy-tag.entity'
+import { Place } from '../../hall/domain/place.entity'
 
 export enum Gender {
   male = 'male',
@@ -75,4 +76,7 @@ export class Deputy {
   @ManyToMany(() => DeputyTag, (deputyTag) => deputyTag.deputy, { nullable: true })
   @JoinTable()
   deputyTag: DeputyTag[] | null
+
+  @OneToOne(() => Place, (place) => place.deputy, { nullable: true, cascade: true })
+  place: Place
 }
