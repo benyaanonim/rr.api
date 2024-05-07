@@ -5,12 +5,14 @@ export class UpdateNewsInput {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  title: string
+  @IsOptional()
+  title: string | null
 
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  text: string
+  @IsOptional()
+  text: string | null
 
   @ApiProperty({
     type: 'string',
@@ -18,7 +20,7 @@ export class UpdateNewsInput {
   })
   @IsString()
   @IsOptional()
-  sources: string
+  sources: string | null
 
   @ApiProperty({
     type: 'number',
@@ -28,7 +30,7 @@ export class UpdateNewsInput {
   })
   @IsNumber()
   @IsOptional()
-  categoryId: number
+  categoryId: number | null
 
   @ApiProperty({
     type: 'number',
@@ -39,5 +41,5 @@ export class UpdateNewsInput {
   @IsArray()
   @IsNumber({}, { each: true })
   @IsOptional()
-  tags: number[]
+  tags: number[] | null
 }

@@ -5,31 +5,40 @@ import { Source } from '../../domain/source.entity'
 import { ApiProperty } from '@nestjs/swagger'
 
 export class TagViewModel {
+  @ApiProperty({ example: 1, description: 'Tag id' })
+  id: number
   @ApiProperty({ example: 'This is tag name', description: 'Tag name' })
   name: string
   @ApiProperty({ example: 'https://www.saite.com', description: 'Tag link' })
   link: string
   constructor(tag: Tag) {
+    this.id = tag.id
     this.name = tag.name
     this.link = tag.link
   }
 }
 
 export class SourceViewModel {
+  @ApiProperty({ example: 1, description: 'Source id' })
+  id: number
   @ApiProperty({ example: 'This is source name', description: 'Source name' })
   name: string
   @ApiProperty({ example: 'This is source value', description: 'Source value' })
   value: string
   constructor(source: Source) {
+    this.id = source.id
     this.name = source.name
     this.value = source.value
   }
 }
 
 export class CategoryViewModel {
+  @ApiProperty({ example: 1, description: 'Category id' })
+  id: number
   @ApiProperty({ example: 'This is category name', description: 'Category name' })
   name: string
   constructor(category: Category) {
+    this.id = category.id
     this.name = category.name
   }
 }
