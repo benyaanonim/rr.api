@@ -15,14 +15,6 @@ export class UpdateNewsInput {
   text: string | null
 
   @ApiProperty({
-    type: 'string',
-    required: false,
-  })
-  @IsString()
-  @IsOptional()
-  sources: string | null
-
-  @ApiProperty({
     type: 'number',
     isArray: true,
     required: false,
