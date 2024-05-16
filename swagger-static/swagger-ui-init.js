@@ -2072,6 +2072,11 @@ window.onload = function() {
         "CategoryViewModel": {
           "type": "object",
           "properties": {
+            "id": {
+              "type": "number",
+              "example": 1,
+              "description": "Category id"
+            },
             "name": {
               "type": "string",
               "example": "This is category name",
@@ -2079,12 +2084,18 @@ window.onload = function() {
             }
           },
           "required": [
+            "id",
             "name"
           ]
         },
         "TagViewModel": {
           "type": "object",
           "properties": {
+            "id": {
+              "type": "number",
+              "example": 1,
+              "description": "Tag id"
+            },
             "name": {
               "type": "string",
               "example": "This is tag name",
@@ -2097,6 +2108,7 @@ window.onload = function() {
             }
           },
           "required": [
+            "id",
             "name",
             "link"
           ]
@@ -2104,6 +2116,11 @@ window.onload = function() {
         "SourceViewModel": {
           "type": "object",
           "properties": {
+            "id": {
+              "type": "number",
+              "example": 1,
+              "description": "Source id"
+            },
             "name": {
               "type": "string",
               "example": "This is source name",
@@ -2116,6 +2133,7 @@ window.onload = function() {
             }
           },
           "required": [
+            "id",
             "name",
             "value"
           ]
@@ -2251,9 +2269,6 @@ window.onload = function() {
               "type": "string"
             },
             "text": {
-              "type": "string"
-            },
-            "sources": {
               "type": "string"
             },
             "categoryId": {

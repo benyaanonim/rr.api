@@ -12,6 +12,9 @@ import { Rating } from './domain/rating.entity'
 import { UpdateRatingInput } from './api/input/update.rating'
 import { CreateDeputyTag } from './api/input/create.deputy-tag'
 import { DeputyTag } from './domain/deputy-tag.entity'
+import SocialBlade, { YouTubeUser } from 'socialblade'
+import SocialBladeUser from 'socialblade'
+import { ConfigService } from '@nestjs/config'
 
 @Injectable()
 export class DeputyService {
@@ -19,6 +22,7 @@ export class DeputyService {
     protected readonly deputyRepo: DeputyRepo,
     protected readonly aws: AwsService,
     protected readonly pqr: PartyQueryRepo,
+    protected readonly config: ConfigService,
   ) {}
 
   async updateDeputyImage(id: number, photo?: Express.Multer.File[], background?: Express.Multer.File) {
@@ -200,6 +204,27 @@ export class DeputyService {
     } catch (e) {
       console.log(e)
       throw new InternalServerErrorException(`Failed to delete deputy tag`)
+    }
+  }
+
+  async getSocialBladeData(name: string) {
+    const SOCIALBLADE_CLIENT_ID = this.config.get<string>('SOCIALBLADE_CLIENT_ID')
+    const SOCIALBLADE_ACCESS_TOKEN = this.config.get<string>('SOCIALBLADE_ACCESS_TOKEN')
+    const client: SocialBlade = new SocialBlade(SOCIALBLADE_CLIENT_ID, SOCIALBLADE_ACCESS_TOKEN)
+    try {
+      const facebook = await client.facebook.user(name)
+      const twitter = await client.twitter.user(name)
+      const instagram = await client.instagram.user(name)
+      // const telegramUser = await client.??.user(name)
+      console.log(facebook)
+      return {
+        facebook: facebook,
+        instagram: twitter,
+        twitter: instagram,
+      }
+    } catch (error) {
+      console.error('Error fetching social media data:', error)
+      throw error
     }
   }
 }

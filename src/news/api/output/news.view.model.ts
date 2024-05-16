@@ -75,7 +75,14 @@ export class NewsViewModel {
     this.text = news.text
     this.viewCount = news.viewCount
     this.image = news.image
-    this.publicationDate = news.publicationDate.toLocaleString('ru-RU')
+    this.publicationDate = news.publicationDate.toLocaleString('ru-RU', {
+      day: '2-digit',
+      month: '2-digit',
+      year: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    })
 
     if (news.category) {
       this.category = new CategoryViewModel(news.category)
